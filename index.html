@@ -3,11 +3,17 @@
 <head>
 
 	<!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-     <!-- Bootstrap CSS -->
+ 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<!-- Font-awsome CSS -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+	<!-- Style -->
+	<link rel="stylesheet" type="text/css" href="./assets/style/style.css">
 
 	<title>Exploring human knowledge through Wikipedia usage</title>
 </head>
@@ -19,20 +25,175 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 
-	<h2 style="text-align:center">
+	<h4 id="page-title">
 		Exploring human knowledge through Wikipedia usage
-	</h2>
+	</h4>
 
-	<div class="container">
-		<div class="row">
-	    <div class="col-sm-3">
-	      One of three columns
+	<div id="level-1-container">
+		<div class="row no-gutters full-height">
+	    <div class="col-sm-2">			
+
+	    		<!-- Category options -->
+				  <ul id="category-filter" class="list-group">
+
+							<li id="category-filter-title" class="list-group-item">
+								 <h6> Filter by Article Category </h6>
+							</li>
+							
+							<li class="list-group-item">
+								  <input type="checkbox" name="category" value="Sports"> 
+								  Sports <br>
+							</li>
+
+							<li class="list-group-item">
+							  <input type="checkbox" name="category" value="Music"> 
+							  Music <br>
+							</li>
+
+							<li class="list-group-item">
+							  <input type="checkbox" name="category" value="Movies"> 
+							  Movies <br>
+							</li>
+							
+					</ul>
+					<!-- Category options end -->
+
 	    </div>
-	    <div class="col-sm-6">
-	      One of three columns
+
+	    <div class="col-sm-8 full-height">
+
+	      <div id="scatterplot" class="full-height" style="background-color: white;">	
+	      </div>
+
 	    </div>
-	    <div class="col-sm-3">
-	      One of three columns
+	    <div class="col-sm-2">
+	      
+	    	<div id="event-filter-title" class="list-group-item">
+					 <h6> Filter by Events </h6>
+				</div>
+
+	      <div id="selected-events-jumb">
+	      	
+		      	<button class="badge badge-pill" style="background-color: #F0EAD6;">Event 1
+		      		<i class="fa fa-times"></i>
+		      	</button>
+
+		      	<button class="badge badge-pill" style="background-color: #D2C29D;">Event 2
+		      		<i class="fa fa-times"></i>
+		      	</button>
+
+		      	<button class="badge badge-pill" style="background-color: #766F57;">Event 3
+		      		<i class="fa fa-times"></i>
+		      	</button>
+
+		      	<button class="badge badge-pill" style="background-color: #7F4145;">Event 4
+		      		<i class="fa fa-times"></i>
+		      	</button>
+
+	      </div>
+
+	      <!-- Event categories accordion -->
+	    	<div class="accordion" id="event-categories">
+
+				  <!-- Politics -->
+				  <div class="card">
+				    <div class="card-header">
+				      <h6 class="mb-0">
+				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+
+				          Politics 
+				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+
+				        </button>
+				      </h6>
+				    </div>
+				    <div id="collapseOne" class="collapse" data-parent="#event-categories">
+				      <div class="card-body">
+				    		Text1
+				      </div>
+				    </div>
+				  </div>
+
+				  <!-- Social Crises -->
+				  <div class="card">
+				    <div class="card-header">
+				      <h6 class="mb-0">
+				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+
+				          Social crises
+				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+
+				        </button>
+				      </h6>
+				    </div>
+				    <div id="collapseTwo" class="collapse" data-parent="#event-categories">
+				      <div class="card-body">
+				    		Text2
+				      </div>
+				    </div>
+				  </div>
+
+				  <!-- Science and Technology -->
+				  <div class="card">
+				    <div class="card-header">
+				      <h6 class="mb-0">
+				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+
+				          Science and Technology
+				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+
+				        </button>
+				      </h6>
+				    </div>
+				    <div id="collapseThree" class="collapse" data-parent="#event-categories">
+				      <div class="card-body">
+				        Text3
+				      </div>
+				    </div>
+				  </div>
+
+
+				  <!-- Sports -->
+				  <div class="card">
+				    <div class="card-header">
+				      <h6 class="mb-0">
+				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+				        		
+				          Sports
+			          	<i class="fas fa-chevron-down" aria-hidden="true"></i>
+
+				        </button>
+				      </h6>
+				    </div>
+				    <div id="collapseFour" class="collapse" data-parent="#event-categories">
+				      <div class="card-body">
+				        Text4
+				      </div>
+				    </div>
+				  </div>
+
+					<!-- Showbiz & Viral Trends  -->
+				  <div class="card">
+				    <div class="card-header">
+				      <h6 class="mb-0">
+				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+
+				          Showbiz & Viral Trends
+				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+
+				        </button>
+				      </h6>
+				    </div>
+				    <div id="collapseFive" class="collapse" data-parent="#event-categories">
+				      <div class="card-body">
+				        Text5
+				      </div>
+				    </div>
+				  </div>
+
+				</div>
+				<!-- Event categories accordion -->
+
 	    </div>
 		</div>
 	</div>
