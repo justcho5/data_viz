@@ -60,6 +60,16 @@ body {
 	margin-left: 6%;
 }
 
+input checkbox {
+
+	cursor: pointer;
+}
+
+label {
+
+	cursor: pointer;
+}
+
 /*-----------Middle panel--------------*/
 
 #scatterplot {
@@ -89,8 +99,7 @@ text {
 	text-anchor: middle;
 }
 
-
-.sport {
+.sports {
 	fill: #cc0052;
 	color: #cc0052;
 }
@@ -100,7 +109,7 @@ text {
 	color: #b366ff;
 }
 
-.movie {
+.movies {
 	fill: #6666ff;
 	color: #6666ff;
 }
