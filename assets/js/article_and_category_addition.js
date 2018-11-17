@@ -15,6 +15,14 @@ function whenDocumentLoaded(action) {
 		action();
 	}
 }
+function cycle(colors=COLOR_CYCLE_DEFAULT) {
+
+	let idx = -1;
+	return () => {
+		idx = (idx + 1) % colors.length;
+		return colors[idx];
+	}
+}
 
 class ScatterPlot {
 
@@ -128,8 +136,30 @@ whenDocumentLoaded(() => {
 		 				data.push({"y": x[0], "x":i, "name": x[1], 
 		 							"sel": x[2], "categ": x[3]}));
 
+
 	const plot = new ScatterPlot("scatterplot", data);
 	//TODO Check if we can pass categories directly, instead of data
 	new ArticleCategories("category-filter", data); 
+	const COLOR_CYCLE_DEFAULT =["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]
+	// const COLOR_CYCLE_DEFAULT =["red","black","blue","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"]
+	const cc = cycle(COLOR_CYCLE_DEFAULT);
+	let cat = new Set(data.map(elem => elem.categ.toLowerCase()))
+	let col = cc()
+	cat.forEach((e)=>{
+		Array.prototype.forEach.call(document.getElementsByClassName(e), element => {
+		
+				if (element.tagName === 'LABEL')
+				{
+					col = cc();}
+				element.style.color = col
+				element.style.fill = col})
+	});
+		
+	
+
+
+
+
+
 });
 
