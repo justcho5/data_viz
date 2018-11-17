@@ -2,8 +2,21 @@
 // Data
 const pageviews = [50, 0, 30, 100, 80, 45];
 const years = ["2013", "2014", "2015", "2016", "2017", "2018"];
-const categories = ["Sports", "Music", "Music", "Movies", "Sports", "Movies"]
+const categories = ["Arts", "Culture", "Events", "Education", "Arts", 
+					"Geography"]
 const selected = [true, true, false, false, false, true];
+
+// Color palette
+const color_palette =  {"Arts": "#8dd3c7", "Culture": "#ffffb3", 
+						"Education": "#bebada", "Events": "#fb8072",
+						"Geography": "#80b1d3", "Health": "#fdb462",
+						"History": "#b3de69", "Humanities":  "#fccde5",
+						"Language": "#d9d9d9", "Law": "#bc80bd",
+						"Life": "#ccebc5", "Mathematics": "#ffed6f"};
+
+// TODO Find colors for "Nature", "People", "Philosohpy", "Politics", 
+//						"Reference", "Religion", "Science and Technology",
+//						"Society", "Sports", "Universe", "World" 
 
 function whenDocumentLoaded(action) {
 
@@ -13,14 +26,6 @@ function whenDocumentLoaded(action) {
 	} else {
 
 		action();
-	}
-}
-function cycle(colors=COLOR_CYCLE_DEFAULT) {
-
-	let idx = -1;
-	return () => {
-		idx = (idx + 1) % colors.length;
-		return colors[idx];
 	}
 }
 
@@ -62,6 +67,7 @@ class ScatterPlot {
 				.attr("r", 2.5)
 				.attr("cx", d => pointX_to_svgX(d.x))
 				.attr("cy", d => pointY_to_svgY(d.y))
+				.attr("style", d => "fill: " + color_palette[d.categ])
 				.attr("class", d => d.categ.toLowerCase())
 				.classed("event-selected", d => d.sel == true); // selected events
 
@@ -122,7 +128,8 @@ class ArticleCategories {
 
 		li.append("label")
 			.attr("for", d => d.toLowerCase())
-			.attr("class", d => d.toLowerCase() + " event-selected")
+			.attr("style", d => "color: " + color_palette[d])
+			.classed("event-selected", true)
 			.text(d => d);
 	}
 }
@@ -139,27 +146,6 @@ whenDocumentLoaded(() => {
 
 	const plot = new ScatterPlot("scatterplot", data);
 	//TODO Check if we can pass categories directly, instead of data
-	new ArticleCategories("category-filter", data); 
-	const COLOR_CYCLE_DEFAULT =["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]
-	// const COLOR_CYCLE_DEFAULT =["red","black","blue","#fdae61","#fee08b","#ffffbf","#e6f598","#abdda4","#66c2a5","#3288bd","#5e4fa2"]
-	const cc = cycle(COLOR_CYCLE_DEFAULT);
-	let cat = new Set(data.map(elem => elem.categ.toLowerCase()))
-	let col = cc()
-	cat.forEach((e)=>{
-		Array.prototype.forEach.call(document.getElementsByClassName(e), element => {
-		
-				if (element.tagName === 'LABEL')
-				{
-					col = cc();}
-				element.style.color = col
-				element.style.fill = col})
-	});
-		
-	
-
-
-
-
-
+	new ArticleCategories("category-filter", data);
 });
 
