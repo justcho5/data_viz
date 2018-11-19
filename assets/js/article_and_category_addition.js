@@ -27,13 +27,12 @@ d3.dsv(",", "https://ividim.github.io/DataViz/data/test_pageviews.csv",
 	})
 .then (function(data) {
 
-		createPlotAndBrush(data);
-		new ArticleCategories("category-filter", data);
+		createPlotAndCategories(data);
 	}
 );
 
 
-function createPlotAndBrush(data) {
+function createPlotAndCategories(data) {
 
 	// Dimensions
 	const width = 400;
@@ -46,6 +45,9 @@ function createPlotAndBrush(data) {
 						width: width,
 						height: height
 					});
+
+	// Category creation
+	let article_categories = new ArticleCategories("category-filter", data);
 
 	//Brush area creation
 	const brush_area = d3.select("#scatterplot").append("g");
@@ -108,7 +110,8 @@ function createPlotAndBrush(data) {
 		d3.select(this).transition()
 			.call(d3.event.target.move, d1.map(xBrushScale));
 
-		scatterplot.updateCircles(d1, data);
+		let new_data = scatterplot.updateCircles(d1, data);
+		article_categories.updateCategories(new_data);
 	}
 }
 
@@ -270,6 +273,8 @@ class ScatterPlot {
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
+
+		return new_data;
 	}
 }
 
@@ -277,6 +282,12 @@ class ScatterPlot {
 class ArticleCategories {
 
    	constructor(category_list_id, data) {
+		
+		this.category_list_id = category_list_id;
+		this.updateCategories(data);
+	}
+
+	getUniqueCategories(data) {
 
 		// Get the list of all article categories (with duplicates)
    		const categories = data.map(x => x.categ);
@@ -286,15 +297,26 @@ class ArticleCategories {
 			categories.filter((currentValue, index, arr) => 
 								(arr.indexOf(currentValue) === index))
 					  .sort();
-		
+
+	  	return unique_categories;
+	}
+
+	updateCategories(data) {
+
+		// Get the list of unique categories
+		const unique_categories = this.getUniqueCategories(data);	
+
 		// Add a <li> element for each category
-		const category_list = d3.select("#" + category_list_id);
-		const li = category_list.selectAll(".article_category")
-								.data(unique_categories)
-								.enter()
-								.append("li")
-									.classed("list-group-item", true)
-									.classed("inline-field", true);
+		const category_list = d3.select("#" + this.category_list_id);
+		const u = category_list.selectAll(".article_category")
+								.data(unique_categories, d => d);
+
+
+		const li = u.enter()
+					.append("li")
+					.classed("article_category", true)
+					.classed("list-group-item", true)
+					.classed("inline-field", true);
 
 		li.append("input")
 			.attr("type", "checkbox")
@@ -308,5 +330,8 @@ class ArticleCategories {
 			.attr("style", d => "color: " + color_palette[d])
 			.classed("event-selected", true)
 			.text(d => d);
+
+		u.exit()
+			.remove();
 	}
 }
