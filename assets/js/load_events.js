@@ -1,5 +1,7 @@
 
-d3.dsv(",", "https://raw.githubusercontent.com/justcho5/data_viz/master/data/events_2013_2018_sorted.csv?token=ASnk-8Z75NnbosKBlTtiLVAM_Lu4OTI7ks5b_m2QwA%3D%3D",
+d3.dsv(",", "https://raw.githubusercontent.com/justcho5/data_viz/" +
+			"master/data/events_2013_2018_sorted.csv?" + 
+			"token=ASnk-8Z75NnbosKBlTtiLVAM_Lu4OTI7ks5b_m2QwA%3D%3D",
 	function(d) {
 
 		return {
