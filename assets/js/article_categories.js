@@ -21,7 +21,7 @@ class ArticleCategories {
 	getUniqueCategories(data) {
 
 		// Get the list of all article categories (with duplicates)
-   		const categories = data.map(x => x.categ);
+   		const categories = data.map(x => x.main_category);
 
 		// Get the list of unique categories
 		const unique_categories = 
