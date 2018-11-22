@@ -57,5 +57,6 @@ function createPlotAndCategories(data) {
 		const domain = brush_area.updateBrushArea(this);
 		let new_data = scatterplot.updateCircles(domain, data);
 		article_categories.updateCategories(new_data);
+		events.updateEvents(domain);
 	}
 }

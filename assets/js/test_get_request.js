@@ -1,7 +1,7 @@
 const url = "https://wikimedia.org/api/rest_v1/metrics/pageviews/top" + 
 			"/en.wikipedia.org/all-access/2016/08/all-days";
 
-const N = 100;
+const N = 10;
 
 $(document).ready(function() {
 

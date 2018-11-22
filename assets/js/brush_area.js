@@ -32,8 +32,7 @@ class BrushArea {
 	    brush_area.append("g")
 			    .classed("brush", true)
 			    .attr("transform", "translate(0," + y + ")")
-			    .call(brush)
-			    .call(brush.move, this.xBrushScale.range());
+			    .call(brush);
 	}
 
 	updateBrushArea(brush) {

@@ -67,9 +67,9 @@ class ScatterPlot {
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOver)					
 			        .on("mouseout", this.onMouseOut)
-					// Selected event behaviour
-					// .classed("event-selected", d => d.sel == true);
-					.classed("event-selected", d => d);
+					// Selected article behaviour
+					// .classed("article-selected", d => d.sel == true);
+					.classed("article-selected", d => d);
 	}
 
 	// Function to be called when user hovers over a circle - shows tooltip
@@ -183,9 +183,9 @@ class ScatterPlot {
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOver)					
 			        .on("mouseout", this.onMouseOut)
-					// selected events
-					// .classed("event-selected", d => d.sel == true);
-					.classed("event-selected", d => d)
+					// selected articles
+					// .classed("article-selected", d => d.sel == true);
+					.classed("article-selected", d => d)
   				.transition()
 					.attr("r", 2.5);
 		
