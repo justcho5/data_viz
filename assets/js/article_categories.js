@@ -42,7 +42,6 @@ class ArticleCategories {
 		const u = category_list.selectAll(".article_category")
 								.data(unique_categories, d => d);
 
-
 		const li = u.enter()
 					.append("li")
 					.classed("article_category", true)

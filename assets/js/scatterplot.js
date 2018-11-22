@@ -4,8 +4,10 @@ class ScatterPlot {
 		
 		// Ranges & Scales
 		const xRange = [new Date(2012, 11, 1), new Date(2018, 1, 1)];
-		const yRange = [(d3.min(data, d => d.view_count)) - 5, 
-						(d3.max(data, d => d.view_count)) + 5];
+		const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
+						(d3.max(data, d => d.view_count)) + 100000];
+
+		console.log(yRange);
 
 		this.xScale = d3.scaleTime()
 							.domain(xRange)
@@ -89,7 +91,10 @@ class ScatterPlot {
 	            .duration(200)
 	            .style("opacity", .9);
 
-        this.div.html(  "<u>" + d.article_name + "</u>" +
+        this.div.html(  "<u>" + d.article_name
+        							.replace(/_/g, " ") //Remove _
+									.replace(/\\/g, "") //Remove \
+							  + "</u>" +
     					"<br/>" +
         				"Views: " + d.view_count +
     					"<br/>" +
@@ -162,8 +167,8 @@ class ScatterPlot {
 		this.xScale.domain(domain);
 
 		// Update yScale domain
-		const yRange = [(d3.min(data, d => d.view_count)) - 5, 
-						(d3.max(data, d => d.view_count)) + 5];
+		const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
+						(d3.max(data, d => d.view_count)) + 100000];
 		this.yScale.domain(yRange);
 
 		// Update circles

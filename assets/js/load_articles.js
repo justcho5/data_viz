@@ -1,6 +1,6 @@
 // Read data from REST API
 
-const articles_url = "http://128.179.181.169:5000/topArticles";
+const articles_url = "http://fivelinks.io:5000/topArticles";
  
 function whenDocumentLoaded(action) {
 
@@ -24,6 +24,7 @@ function createPlotAndCategories(data) {
 
 	// TODO Remove
 	data.forEach(d => d["peak_date"] = createRandomDate());
+	data.forEach(d => d["main_category"] = assignRandomCategory());
 
 	// Dimensions
 	const width = 400;
@@ -66,6 +67,7 @@ function createPlotAndCategories(data) {
 
 			// TODO Remove
 			data.forEach(d => d["peak_date"] = createRandomDate(domain));
+			data.forEach(d => d["main_category"] = assignRandomCategory());
 
 			scatterplot.updateCircles(domain, data)
 			article_categories.updateCategories(data);
@@ -90,4 +92,15 @@ function createRandomDate(dom) {
 
 	return new Date(domain[0].getTime() + 
 			Math.random() * (domain[1].getTime() - domain[0].getTime()));
+}
+
+//TODO Remove
+function assignRandomCategory() {
+
+	
+	const categories = [ "Arts", "Culture", "Education", "Events",
+						 "Geography", "Health", "History", "Humanities",
+						 "Language", "Law", "Life", "Mathematics"];
+
+	return categories[Math.round(Math.random() * 11)];
 }
