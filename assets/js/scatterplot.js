@@ -4,8 +4,12 @@ class ScatterPlot {
 		
 		// Ranges & Scales
 		const xRange = [new Date(2012, 11, 1), new Date(2018, 1, 1)];
-		const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
-						(d3.max(data, d => d.view_count)) + 100000];
+		// const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
+		// 				(d3.max(data, d => d.view_count)) + 100000];
+
+		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
+
+		console.log(yRange);
 
 		this.xScale = d3.scaleTime()
 							.domain(xRange)
@@ -78,7 +82,8 @@ class ScatterPlot {
 	// Function to be called when user hovers over a circle - shows tooltip
 	onMouseOver(d) {
 
-		let format = d3.timeFormat("%B %d, %Y");
+		let dateFormat = d3.timeFormat("%B %d, %Y");
+		let viewsFormat = d3.format(",");
 
 		this.div = d3.select("body")
 					.append("div")
@@ -89,14 +94,13 @@ class ScatterPlot {
 	            .duration(200)
 	            .style("opacity", .9);
 
-        this.div.html(  "<u>" + d.article_name
+        this.div.html(  "<div><u>" + d.article_name
         							.replace(/_/g, " ") //Remove _
 									.replace(/\\/g, "") //Remove \
-							  + "</u>" +
+							  + "</u></div>" +
+        				"Total views: " + viewsFormat(d.view_count) +
     					"<br/>" +
-        				"Views: " + d.view_count +
-    					"<br/>" +
-        			 	"(" + format(d.peak_date) + ")");
+        			 	"Most viewed on: " + dateFormat(d.peak_date));
 
         const rect = d3.select("rect").node().getBoundingClientRect();
         const rectTopBorder = rect.top;
@@ -165,9 +169,9 @@ class ScatterPlot {
 		this.xScale.domain(domain);
 
 		// Update yScale domain
-		const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
-						(d3.max(data, d => d.view_count)) + 100000];
-		this.yScale.domain(yRange);
+		// const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
+		// 				(d3.max(data, d => d.view_count)) + 100000];
+		// this.yScale.domain(yRange);
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
@@ -208,6 +212,6 @@ class ScatterPlot {
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
 
 		// Update y axis
-		this.focus_area.select(".axis.axis-y").call(this.yAxis);
+		// this.focus_area.select(".axis.axis-y").call(this.yAxis);
 	}
 }
