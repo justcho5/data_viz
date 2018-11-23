@@ -54,10 +54,13 @@ class ArticleCategories {
 			.attr("id", d => d.toLowerCase())
 			.attr("onclick", 
 				d => "filter_by_category('" + d.toLowerCase() + "')");
+		li.append("div")
+			.classed("color-box", true)
+			.attr("style", d => "background-color: " + color_palette[d]);
 
 		li.append("label")
 			.attr("for", d => d.toLowerCase())
-			.attr("style", d => "color: " + color_palette[d])
+			// .attr("style", d => "color: " + color_palette[d])
 			.text(d => d);
 
 		u.exit()

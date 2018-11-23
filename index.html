@@ -15,6 +15,10 @@
 	<!-- Style -->
 	<link rel="stylesheet" type="text/css" href="./assets/style/style.css">
 
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata|Montserrat|Oswald|Roboto" rel="stylesheet">
+
+
+
 	<title>Exploring human knowledge through Wikipedia usage</title>
 </head>
 <body>
@@ -47,23 +51,7 @@
 		<div class="row no-gutters full-height">
 	    <div class="col-sm-2">			
 
-    		<!-- Category options -->
-			  <ul id="category-filter" class="list-group">
-
-					<li id="category-filter-title" class="list-group-item">
-						 <h6> Filter by Article Category </h6>
-					</li>	
-				</ul>
-	    </div>
-
-	    <div class="col-sm-8 full-height">
-
-	      <svg id="scatterplot" viewBox="-10 -10 420 320" width="100%" height="100%"></svg>
-
-	    </div>
-	    <div class="col-sm-2">
-	      
-	    	<div id="event-filter-title" class="list-group-item">
+				<div id="event-filter-title" class="list-group-item">
 				 	<h6> Select Events <br> (max. 4) </h6>
 			</div>
 
@@ -77,9 +65,10 @@
 				    <div class="card-header">
 				      <h6 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#events-politics" aria-expanded="false" aria-controls="collapseOne">
+				        	<i class="fas fa-chevron-right" aria-hidden="true"></i>
 
 				          Politics 
-				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+				          
 
 				        </button>
 				      </h6>
@@ -96,9 +85,9 @@
 				    <div class="card-header">
 				      <h6 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#events-social" aria-expanded="false" aria-controls="collapseTwo">
-
+				        <i class="fas fa-chevron-right" aria-hidden="true"></i>
 				          Social crises
-				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+				          
 
 				        </button>
 				      </h6>
@@ -115,9 +104,10 @@
 				    <div class="card-header">
 				      <h6 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#events-science" aria-expanded="false" aria-controls="collapseThree">
+				        	<i class="fas fa-chevron-right" aria-hidden="true"></i>
 
 				          Science and Technology
-				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+				          
 
 				        </button>
 				      </h6>
@@ -135,9 +125,10 @@
 				    <div class="card-header">
 				      <h6 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#events-sports" aria-expanded="false" aria-controls="collapseFour">
+				        	<i class="fas fa-chevron-right" aria-hidden="true"></i>
 				        		
 				          Sports
-			          	<i class="fas fa-chevron-down" aria-hidden="true"></i>
+			          	
 
 				        </button>
 				      </h6>
@@ -154,9 +145,10 @@
 				    <div class="card-header">
 				      <h6 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#events-viral" aria-expanded="false" aria-controls="collapseFive">
+				        	<i class="fas fa-chevron-right" aria-hidden="true"></i>
 
 				          Showbiz & Viral Trends
-				          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+				          
 
 				        </button>
 				      </h6>
@@ -170,6 +162,23 @@
 
 				</div>
 				<!-- Event categories accordion -->
+				<!-- Category options -->
+			  <ul id="category-filter" class="list-group">
+
+					<li id="category-filter-title" class="list-group-item">
+						 <h6> Filter by Article Category </h6>
+					</li>	
+				</ul>
+				<!--Category options end-->
+	    </div>
+
+	    <div class="col-sm-10 full-height">
+
+	      <svg id="scatterplot" viewBox="-10 -10 420 320" width="100%" height="100%"></svg>
+
+	    </div>
+	      
+	    	
 
 	    </div>
 		</div>

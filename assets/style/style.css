@@ -8,7 +8,15 @@ body {
 
 	background-color: silver;
 	height: 100%;
+	font-family: 'Inconsolata', monospace !important;
+
 }
+button {
+	padding:0 !important;
+}
+/*:root {
+font-family: 'Montserrat', sans-serif;
+}*/
 
 .full-height {
 
@@ -29,6 +37,8 @@ body {
 	background-color: #262626;
 	color:lightgrey;
   	height: 100%;
+  	/*font-family: 'Montserrat', sans-serif;*/
+
 }
 
 #category-filter-title {
@@ -40,7 +50,7 @@ body {
 #category-filter li {
 
 	color: #e6e6e6;
-	font-family: "Arial", Times, serif;
+	/*font-family: "Arial", Times, serif;*/
 	border-color: #333333;
 	border-left: none;
 	border-right: none;
@@ -147,7 +157,7 @@ div.tooltip {
 	background-color: #262626;
 	border-top: none;
 	color: #e6e6e6;
-	font-family: "Arial", Times, serif;
+	/*font-family: "Arial", Times, serif;*/
 	border-color: #333333;
 }
 
@@ -173,7 +183,7 @@ div.tooltip {
 
 .event-checkbox {
 
-	font-family: "Arial", Times, serif;
+	/*font-family: "Arial", Times, serif;*/
 	font-size: 14px;
 	border: none;
 	word-wrap: normal;
@@ -181,7 +191,7 @@ div.tooltip {
 
 .inline-field input, .inline-field label {
 
-	display: block;
+	/*display: block;*/
 	vertical-align: middle;
 }
 
@@ -195,6 +205,11 @@ div.tooltip {
 	margin-top: 5px;
 	margin-left: -10px;
 	float:left;
+}
+.color-box {
+	width: 10px;
+	height:10px;
+	display:inline-block;
 }
 
 .badge {
