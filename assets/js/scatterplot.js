@@ -1,5 +1,6 @@
 class ScatterPlot {
 
+
 	constructor(svg_element_id, data, width, height) {
 		
 		// Ranges & Scales
@@ -9,7 +10,6 @@ class ScatterPlot {
 
 		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
 
-		console.log(yRange);
 
 		this.xScale = d3.scaleTime()
 							.domain(xRange)
@@ -17,6 +17,7 @@ class ScatterPlot {
 		this.yScale = d3.scaleLinear()
 							.domain(yRange)
 							.range([height - 10, -10]);
+		this.color_gradient = d3.scaleQuantize().domain(this.yScale.domain()).range(["#f70b17", "#e00813", "#c80711", "#af060f", "#96050d", "#7e040b", "#650309"]);
 
 		//Create scatterplot and surrounding g elements
 		const svg = d3.select("#" + svg_element_id);
@@ -62,14 +63,12 @@ class ScatterPlot {
 							.selectAll("circle")
 							// Bind each svg circle to a unique data element
 							.data(data, d => d.article_id);
-
-		circles.enter()
+		circles.enter()	
 				.append("circle")
 					.attr("r", 2.5)
 					.attr("cx", d => this.xScale(d.peak_date))
 					.attr("cy", d => this.yScale(d.view_count))
-					.attr("style", d => "fill: " + 
-										color_palette[d.main_category])
+					.attr("fill", d => this.color_gradient(d.view_count))
 					.attr("class", d => d.main_category.toLowerCase())
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOver)					
@@ -185,13 +184,13 @@ class ScatterPlot {
 	            .attr("cy", d => this.yScale(d.view_count));
 
         // Enter() 
+
 		circles.enter()
 				.append("circle")
 					.attr("r", 0)
 					.attr("cx", d => this.xScale(d.peak_date))
 					.attr("cy", d => this.yScale(d.view_count))
-					.attr("style", d => "fill: " + 
-									color_palette[d.main_category])
+					.attr("fill", d => this.color_gradient(d.view_count))
 					.attr("class", d => d.main_category.toLowerCase())
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOver)					
@@ -215,3 +214,5 @@ class ScatterPlot {
 		// this.focus_area.select(".axis.axis-y").call(this.yAxis);
 	}
 }
+
+
