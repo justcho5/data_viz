@@ -28,13 +28,14 @@ function createPlotAndCategories(data) {
 
 	// Dimensions
 	const width = 400;
-	const height = 255;
+	// const height = 255;
+	const height = 200;
 	
 	// Scatterplot creation
 	let scatterplot = new ScatterPlot("scatterplot", data, width, height);
 
 	// Category creation
-	let article_categories = new ArticleCategories("category-filter", data);
+	// let article_categories = new ArticleCategories("category-filter", data);
 
 	//Brush area creation
 	let brushHeight = 20;
@@ -99,5 +100,5 @@ function assignRandomCategory() {
 						 "Geography", "Health", "History", "Humanities",
 						 "Language", "Law", "Life", "Mathematics"];
 
-	return categories[Math.round(Math.random() * 11)];
+	return categories[Math.round(Math.random() * (categories.length - 1))];
 }

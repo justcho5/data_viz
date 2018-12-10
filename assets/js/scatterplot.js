@@ -5,11 +5,7 @@ class ScatterPlot {
 		
 		// Ranges & Scales
 		const xRange = [new Date(2012, 11, 1), new Date(2018, 1, 1)];
-		// const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
-		// 				(d3.max(data, d => d.view_count)) + 100000];
-
 		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
-
 
 		this.xScale = d3.scaleTime()
 							.domain(xRange)
@@ -17,6 +13,7 @@ class ScatterPlot {
 		this.yScale = d3.scaleLinear()
 							.domain(yRange)
 							.range([height - 10, -10]);
+							
 		this.color_gradient = d3.scaleQuantize().domain(this.yScale.domain()).range(["#f70b17", "#e00813", "#c80711", "#af060f", "#96050d", "#7e040b", "#650309"]);
 
 		//Create scatterplot and surrounding g elements
@@ -81,7 +78,7 @@ class ScatterPlot {
 	// Function to be called when user hovers over a circle - shows tooltip
 	onMouseOver(d) {
 
-		let dateFormat = d3.timeFormat("%B %d, %Y");
+		let dateFormat = d3.timeFormat("%d %b %Y");
 		let viewsFormat = d3.format(",");
 
 		this.div = d3.select("body")
@@ -119,28 +116,8 @@ class ScatterPlot {
         	this.div.style("top", tooltipTop + "px");
         
 
-        // If the tooltip sticks out of the scatterplot's left border,
-        // it is slightly moved to the right.
         const tooltipLeft = circleLeft - 0.4 * tooltipWidth;
-        const diffLeft = rectLeftBorder - tooltipLeft;
-   //      if (diffLeft > 0) {
-
-   //      	this.div.style("left", tooltipLeft + diffLeft + 3 + "px");
-   //      } else {
-
-   //  		// If the tooltip sticks out of the scatterplot's right border,
-   //      	// it is slightly moved to the left.
-   //      	const tooltipRight = tooltipLeft + tooltipWidth;
-   //  		const diffRight = tooltipRight - rectRightBorder;
-
-			// if (diffRight > 0) {
-
-			// 	this.div.style("left", tooltipLeft - diffRight - 3 + "px");
-			// } else {
-
-				this.div.style("left", tooltipLeft + "px");
-			// }
-    	// }
+		this.div.style("left", tooltipLeft + "px");
     }
 
     // Function to be called when user stops hovering over a circle
@@ -166,11 +143,6 @@ class ScatterPlot {
 
 		// Update xScale domain
 		this.xScale.domain(domain);
-
-		// Update yScale domain
-		// const yRange = [(d3.min(data, d => d.view_count)) - 100000, 
-		// 				(d3.max(data, d => d.view_count)) + 100000];
-		// this.yScale.domain(yRange);
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
@@ -209,9 +181,6 @@ class ScatterPlot {
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
-
-		// Update y axis
-		// this.focus_area.select(".axis.axis-y").call(this.yAxis);
 	}
 }
 
