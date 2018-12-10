@@ -1,19 +1,36 @@
 html {
 
   height: 100%;
+  width: 100%;
 }
 
 body {
 
 	background-color: #262626;
 	height: 100%;
+	width: 100%;
 	overflow-x: hidden;
-	/*overflow-y: hidden;*/
+	overflow-y: hidden;
 }
 
 .full-height {
 
 	height: 100%;
+}
+
+.full-width {
+
+	width: 100%;
+}
+
+.hyphenated {
+
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	-webkit-hyphens: auto;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
 }
 
 #page-title {
@@ -22,16 +39,12 @@ body {
 	color: DarkSlateGray;
 }
 
-#page-title h4 {
-
-	/*margin-left: 25%;*/
-}
-
 #level-1-container {
 
 	/*background-color: #262626;*/
 	color: lightgrey;
 	padding: 0px;
+	width: 100%;
 }
 
 /*-----------Left panel--------------*/
@@ -43,6 +56,7 @@ body {
 
 /*Collapsible*/
 .left-panel {
+
 	height: 100%;
 	width: 0;
 	position: absolute;
@@ -79,7 +93,7 @@ font-size, so the contents don't overlap
 	color: white;
 }
 
-#article-search h6 {
+#article-search h6, #list-top-articles h6 {
 
 	font-weight: bold;
 	margin-top: 3%;
@@ -87,16 +101,14 @@ font-size, so the contents don't overlap
 	text-align: center;
 }
 
-
-/*#article-search-title, #check-all-li {*/
-#article-search-title {
+#article-search-title, #list-top-articles-title {
 
 	background-color: #262626;
 	border-top: none;
 }
 
 
-#article-search li {
+#article-search li, #list-top-articles li {
 
 	color: #e6e6e6;
 	font-family: "Arial", Times, serif;
@@ -157,10 +169,16 @@ input checkbox {
 	min-height: 100px;
 }
 
+.accordion {
+
+	/*max-height: 250px;*/
+	overflow-y: auto;
+}
+
+
 .card-body .scrollable {
 
 	max-height: 250px;
-	/*height: 1%;*/
 	overflow-y: auto;
 }
 
@@ -193,6 +211,7 @@ input checkbox {
 .badge {
 
 	opacity: 0.8;
+	float: left;
 }
 
 .fa-times {
@@ -298,3 +317,20 @@ div.tooltip > div {
 
 /*------------Right panel---------------*/
 
+
+#list-top-articles li:not(#list-top-articles-title){
+
+	background-color: #404040;
+}
+
+.article-li {
+
+	width: 100%
+}
+
+#list-top-articles, #list-top-articles .scrollable {
+
+	width: 100%;
+	max-height: 425px;  /* TODO Find a way to make it %*/
+	overflow-y: auto;
+}

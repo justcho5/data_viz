@@ -29,6 +29,7 @@
 
 	<!-- JS scripts -->
 	<script type="text/javascript" src="./assets/js/load_json.js"></script>
+	<script type="text/javascript" src="./assets/js/clean_article_name.js"></script>
 	<script type="text/javascript" src="./assets/js/scatterplot.js"></script>
 	<script type="text/javascript" src="./assets/js/article_categories.js"></script>
 	<script type="text/javascript" src="./assets/js/brush_area.js"></script>
@@ -39,6 +40,7 @@
 	<script type="text/javascript" src="./assets/js/filter_by_category.js"></script>
 	<script type="text/javascript" src="./assets/js/select_event.js"></script>
 	<script type="text/javascript" src="./assets/js/toggle_left_panel.js"></script>
+	<script type="text/javascript" src="./assets/js/article_list.js"></script>
 
 	<div id="level-1-container" class="container-fluid">
 
@@ -60,7 +62,7 @@
 			</div>
 		</div>
 
-		<div class="row no-gutters">
+		<div class="row no-gutters full-width">
 		  <div class="col-sm-10">
 
 				<div id="left_panel" class="left-panel">
@@ -203,7 +205,19 @@
 
 	    </div>
 
-	    <div class="col-sm-2">
+	    <div class="col-sm-2 full-height full-width">
+
+    	<!-- List of top articles -->
+    	<ul id="list-top-articles" class="list-group">
+
+				<li id="list-top-articles-title" class="list-group-item">
+			 		<h6> Top articles </h6>
+				</li>
+
+				<div class="scrollable"><div>
+
+			</ul>
+			<!-- List of top articles end -->						
 
 	    </div>
 

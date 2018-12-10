@@ -1,6 +1,5 @@
 class ScatterPlot {
 
-
 	constructor(svg_element_id, data, width, height) {
 		
 		// Ranges & Scales
