@@ -17,7 +17,12 @@ class ScatterPlot {
 		this.yScale = d3.scaleLinear()
 							.domain(yRange)
 							.range([height - 10, -10]);
-		this.color_gradient = d3.scaleQuantize().domain(this.yScale.domain()).range(["#f70b17", "#e00813", "#c80711", "#af060f", "#96050d", "#7e040b", "#650309"]);
+		// Color gradient for datapoints based on y scale
+		const grad_scale = this.yScale.domain()[1]
+		const colors = ["#d7191c","#fdae61","#ffffbf","#abdda4","#2b83ba"] 
+		this.color_gradient = d3.scaleLinear()
+						.domain(d3.ticks(0, grad_scale, 5))
+						.range(colors);
 
 		//Create scatterplot and surrounding g elements
 		const svg = d3.select("#" + svg_element_id);
@@ -30,7 +35,8 @@ class ScatterPlot {
 					.attr("y", "-10")
 					.attr("width", width)
 					.attr("height", height)
-					.attr("id", "canvas");
+					.attr("id", "canvas")
+					.attr("fill", "#FFFFFF");
 					// .classed("zoom", true);
 
 		// Create X axis
@@ -54,9 +60,60 @@ class ScatterPlot {
 					        return prefix(d);
 					    });
 
-		this.focus_area.append("g")
-						.classed("axis axis-y", true)
-			      		.call(this.yAxis);	   	
+
+		//JUSTINA			    
+		let legend_data = d3.range(this.yScale.domain())
+		let defs = this.focus_area.append('defs');
+		let linearGradient = defs.append('linearGradient')
+						.attr('id', 'linear-gradient');
+
+		linearGradient
+			.attr("x1", "0%")
+			.attr("y1", "0%")
+			.attr("x2", "0%")
+			.attr("y2", "100%")
+
+		linearGradient.selectAll("stop")
+			.data([
+			{offset: "0%", color: colors[4]},
+			{offset: "25%", color: colors[3]},
+			{offset: "50%", color: colors[2]},
+			{offset: "75%", color: colors[1]},
+			{offset: "100%", color: colors[0]},
+
+
+
+
+			])
+			.enter().append("stop")
+			.attr("offset", function(d) { 
+			return d.offset; 
+			})
+			.attr("stop-color", function(d) { 
+			return d.color; 
+			});
+		// this.focus_area.append("g")
+		// 				.classed("axis axis-y", true)
+		// 	      		.call(this.yAxis)
+		// 	      		.style('color', 'red')
+      	 this.focus_area.append("rect")
+      	 				.attr("x", 0)
+      	 				.attr("y", -10)
+      	 				.attr("width", 10)
+      	 				.attr("height", height)
+      	 				.style("fill", "url(#linear-gradient)");
+
+		let yLeg = d3.scaleLinear()
+						.domain(this.yScale.domain())
+						.range([height-10,-10])
+		let axisLeg = d3.axisLeft(yLeg)
+						.tickValues(this.color_gradient.domain())
+
+		this.focus_area.attr("class", "axis")
+						.append("g")
+						.attr("transform","translate(0,0)")
+						.call(axisLeg);
+
 
 		// Create article circles
 		let circles = this.focus_area
@@ -76,6 +133,9 @@ class ScatterPlot {
 					// Selected article behaviour
 					// .classed("article-selected", d => d.sel == true);
 					.classed("article-selected", d => d);
+
+		//JUSTINA
+
 	}
 
 	// Function to be called when user hovers over a circle - shows tooltip
