@@ -15,11 +15,11 @@ class ScatterPlot {
 							.range([height - 10, -10]);
 
 		// Color gradient for datapoints based on y scale
-		const grad_scale = this.yScale.domain()[1]
-		const colors = ["#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15"] 
-		this.color_gradient = d3.scaleLinear()
-						.domain(d3.ticks(0, grad_scale, 5))
-						.range(colors);
+		// const grad_scale = this.yScale.domain()[1]
+		// const colors = ["#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15"] 
+		// this.color_gradient = d3.scaleLinear()
+		// 				.domain(d3.ticks(0, grad_scale, 5))
+		// 				.range(colors);
 
 		//Create scatterplot and surrounding g elements
 		const svg = d3.select("#" + svg_element_id);
