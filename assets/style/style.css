@@ -55,23 +55,22 @@ body {
 }
 
 /*Collapsible*/
-.left-panel {
+#left-panel {
 
 	height: 100%;
-	width: 0;
+	width: 0px;
 	position: absolute;
 	z-index: 1; /* Sit on top */
-	left: 0;
-	top: 0;
 	background-color: rgb(0,0,0); /* Black fallback color */
 	background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
 	overflow-x: hidden;
-	transition: 0.5s;
+	/*transition: 0.5s;*/
 }
 
-.left-panel-content {
+#left-panel-content {
 	
-	text-align: center; 
+	text-align: center;
+	position: absolute;
 }
 
 
@@ -94,11 +93,11 @@ font-size, so the contents don't overlap
 	color: white;
 }
 
-#article-search h6, #list-top-articles h6 {
+#article-search h6, #event-filter-title h6, #list-top-articles h6 {
 
 	font-weight: bold;
-	margin-top: 3%;
-	margin-bottom: 3%;
+	/*margin-top: 3%;*/
+	/*margin-bottom: 3%;*/
 	text-align: center;
 }
 
@@ -129,6 +128,7 @@ input checkbox {
 	cursor: pointer;
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
 
     width: 12px;
@@ -155,27 +155,16 @@ input checkbox {
 	border-color: #333333;
 }
 
-#event-filter-title h6 {
-
-	font-weight: bold;
-	margin-top: 3%;
-	margin-bottom: 3%;
-	text-align: center;
-}
-
 #selected-events-jumb {
 
 	background-color: #b3b3b3;
-	/*height: 15%;*/
 	min-height: 100px;
 }
 
 .accordion {
 
-	/*max-height: 250px;*/
 	overflow-y: auto;
 }
-
 
 .card-body .scrollable {
 
@@ -200,6 +189,7 @@ input checkbox {
 .inline-field label {
 
 	margin-left: 10px;
+	cursor: pointer;
 }
 
 .inline-field input {
@@ -213,6 +203,8 @@ input checkbox {
 
 	opacity: 0.8;
 	float: left;
+	word-wrap: normal;
+	overflow-wrap: normal;
 }
 
 .fa-times {
@@ -239,7 +231,7 @@ input checkbox {
 
 .card button:hover {
 
-	color:grey;
+	color: grey;
 }
 
 /*-----------Middle panel--------------*/
@@ -272,14 +264,14 @@ input checkbox {
 
 text {
 
-	fill: grey;
+	fill: #484747;
 	font-size: 4.5px;
 	text-anchor: middle;
 }
 
 circle {
 
-	stroke: grey;
+	stroke: #484747;
 	stroke-width: 0.2;
 	cursor: pointer;
 }
@@ -329,9 +321,35 @@ div.tooltip > div {
 	width: 100%
 }
 
+li.article-li:hover span {
+
+	color: grey;
+	cursor: pointer;
+}
+
 #list-top-articles, #list-top-articles .scrollable {
 
 	width: 100%;
 	max-height: 425px;  /* TODO Find a way to make it %*/
 	overflow-y: auto;
+}
+
+#article-summary {
+
+	padding-top: 5%;
+	padding-left: 5%;
+	width: 95%;
+	max-height: 50%;
+	word-wrap: normal;
+	overflow-y: auto;
+}
+
+#article-summary div {
+
+	text-align: center;
+}
+
+#article-summary a:link, #article-summary a:visited { 
+
+	color: Goldenrod;
 }
