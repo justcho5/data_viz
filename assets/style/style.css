@@ -310,6 +310,13 @@ div.tooltip > div {
 	text-align: center;
 }
 
+.line {
+
+    fill: none;
+    stroke: #a50f15;
+    stroke-width: 1px;
+}
+
 /*------------Right panel---------------*/
 
 

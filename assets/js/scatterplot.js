@@ -203,7 +203,7 @@ class ScatterPlot {
 
             let str = "Most viewed on: ";
             if (d.granularity != null)
-            	str = "On: "
+            	str = "On: ";
 
 	        this.div.html(  "<div><u>" + cleanArticleName(d.article_name) +
 						  	"</u></div>" +
@@ -242,6 +242,10 @@ class ScatterPlot {
 
     	// Bring selected circle to its initial form
 		if (circle.classed("article-clicked") != true) {
+
+			let r = 2.5;
+            if (d.granularity != null)
+            	r = 2;
 
 			circle.transition()
 					.attr("r", 2.5)
@@ -359,11 +363,12 @@ class ScatterPlot {
 		// Update xScale domain
 		// this.xScale.domain(domain);
 
+		// TODO Bring back
 		// Update circles
-		let circles = this.focus_area.selectAll("circle")
-									 // Bind each svg circle to a 
-									 // unique data element
-									 .data(data, d => d.article_id);
+		// let circles = this.focus_area.selectAll("circle")
+		// 							 // Bind each svg circle to a 
+		// 							 // unique data element
+		// 							 .data(data, d => d.article_id);
 
 
 		// // Update()
@@ -372,28 +377,64 @@ class ScatterPlot {
 	 //            .attr("cy", d => this.yScale(d.view_count))
 	 //            .attr("fill", d => this.color_gradient(d.view_count));
 
+
+	 	// TODO Bring back
         // Enter() 
-		circles.enter()
-				.append("circle")
-					.attr("id", d => "article_" + d.article_id)
-					.attr("r", 0)
-					.attr("cx", d => this.xScale(d.peak_date))
-					.attr("cy", d => this.yScale(d.view_count))
-					.attr("fill", "#a50f15")
-					// Tooltip behaviour
-					.on("mouseover", this.onMouseOver)					
-			        .on("mouseout", this.onMouseOut)
-  				.transition()
-					.attr("r", 2.5);
-		
+		// circles.enter()
+		// 		.append("circle")
+		// 			.attr("id", d => "article_" + d.article_id)
+		// 			.attr("r", 0)
+		// 			.attr("cx", d => this.xScale(d.peak_date))
+		// 			.attr("cy", d => this.yScale(d.view_count))
+		// 			.attr("fill", "#a50f15")
+		// 			// Tooltip behaviour
+		// 			.on("mouseover", this.onMouseOver)					
+		// 	        .on("mouseout", this.onMouseOut)
+  // 				.transition()
+		// 			.attr("r", 2.5);
+
+		// TODO Bring back
 		// Exit() 
-		circles.exit()
-				.transition()
-					.attr("r", 0)
-				.remove();
+		// circles.exit()
+		// 		.transition()
+		// 			.attr("r", 0)
+		// 		.remove();
 
 		// Update x axis
 		// this.focus_area.select(".axis.axis-x").call(this.xAxis);
+
+// -----------------------------------------------------------------------
+
+		// DOKIMI!!!!!
+
+		// 7. d3's line generator
+		let line = d3.line()
+		    		.x(d => this.xScale(d.peak_date)) // set the x values for the line generator
+		    		.y(d => this.yScale(d.view_count)) // set the y values for the line generator 
+		    		.curve(d3.curveMonotoneX); // apply smoothing to the line
+
+		
+		// 9. Append the path, bind the data, and call the line generator 
+		this.focus_area.append("path")
+					    .datum(data) // 10. Binds data to the line 
+					    .attr("class", "line") // Assign a class for styling 
+					    .attr("d", line); // 11. Calls the line generator 
+
+		// 12. Appends a circle for each datapoint 
+		this.focus_area.selectAll(".circle")
+					    .data(data)
+					  	.enter()
+					  		.append("circle")
+								.attr("id", d => "article_" + d.article_id)
+								.attr("r", 0)
+								.attr("cx", d => this.xScale(d.peak_date))
+								.attr("cy", d => this.yScale(d.view_count))
+								.attr("fill", "#a50f15")
+								// Tooltip behaviour
+								.on("mouseover", this.onMouseOver)					
+						        .on("mouseout", this.onMouseOut)
+			  				.transition()
+								.attr("r", 2);
     }
 }
 
