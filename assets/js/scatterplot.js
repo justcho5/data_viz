@@ -1,9 +1,10 @@
+
 class ScatterPlot {
 
 	constructor(svg_element_id, data, width, height) {
 		
 		// Ranges & Scales
-		const xRange = [new Date(2012, 11, 1), new Date(2018, 1, 1)];
+		const xRange = [new Date(2012, 11, 1), new Date(2019, 1, 1)];
 		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
 
 		this.xScale = d3.scaleTime()
@@ -110,19 +111,15 @@ class ScatterPlot {
 					.attr("cx", d => this.xScale(d.peak_date))
 					.attr("cy", d => this.yScale(d.view_count))
 					.attr("fill", d => this.color_gradient(d.view_count))
-					.attr("class", d => d.main_category.toLowerCase()) //TODO Remove
-					// Tooltip behaviour
+					// Tooltip behaviour. 
 					.on("mouseover", this.onMouseOver)					
 			        .on("mouseout", this.onMouseOut)
 					// Selected article behaviour
-			        .on("click", this.onClick)
-					// .classed("article-selected", d => d.sel == true);
-					.classed("article-selected", d => d);
+			        .on("click", this.onClick);
 
 		//JUSTINA
 
 	}
-
 
 	updateCircles(dom, data) {
 
@@ -159,14 +156,11 @@ class ScatterPlot {
 					.attr("cx", d => this.xScale(d.peak_date))
 					.attr("cy", d => this.yScale(d.view_count))
 					.attr("fill", d => this.color_gradient(d.view_count))
-					.attr("class", d => d.main_category.toLowerCase())
 					// Tooltip behaviour
-					.on("mouseover", this.onMouseOver)					
+					.on("mouseover", this.onMouseOver)				
 			        .on("mouseout", this.onMouseOut)
 			        // Selected article behaviour
 			        .on("click", this.onClick)
-					// .classed("article-selected", d => d.sel == true);
-					.classed("article-selected", d => d)
   				.transition()
 					.attr("r", 2.5);
 		
@@ -184,56 +178,60 @@ class ScatterPlot {
 	// Function to be called when user hovers over a circle - shows tooltip
 	onMouseOver(d) {
 
-		// Highlight selected circle
-		d3.select("#article_" + d.article_id)
-			.transition()
-			.attr("r", 2.7)
-			.style("stroke", "Goldenrod")
-			.style("stroke-width", "0.8");
+		const circle = d3.select("#article_" + d.article_id);
 
-		// TODO Not needed?
-		// Highlight selected article from list
-		// d3.select("#li_" + d.article_id)
-		// 	.style("color", "grey")
+		if (circle.classed("deleted") == false) {
 
-		let dateFormat = d3.timeFormat("%d %b %Y");
-		let viewsFormat = d3.format(",");
+			// Highlight selected circle
+			d3.select("#article_" + d.article_id)
+				.transition()
+				.attr("r", 2.7)
+				.style("stroke", "Goldenrod")
+				.style("stroke-width", "0.8");
 
-		this.div = d3.select("body")
-					.append("div")
-				    .attr("class", "tooltip")
-				    .style("opacity", 0);
+			let dateFormat = d3.timeFormat("%d %b %Y");
+			let viewsFormat = d3.format(",");
 
-    	this.div.transition()
-	            .duration(200)
-	            .style("opacity", .9);
+			this.div = d3.select("body")
+						.append("div")
+					    .attr("class", "tooltip")
+					    .style("opacity", 0);
 
-        this.div.html(  "<div><u>" + cleanArticleName(d.article_name) +
-					  	"</u></div>" +
-        				"Total views: " + viewsFormat(d.view_count) +
-    					"<br/>" +
-        			 	"Most viewed on: " + dateFormat(d.peak_date));
+	    	this.div.transition()
+		            .duration(200)
+		            .style("opacity", .9);
 
-        const rect = d3.select("rect").node().getBoundingClientRect();
-        const rectTopBorder = rect.top;
-        const rectLeftBorder = rect.left;
-        const rectRightBorder = rect.right;
-        const circleLeft = $(this).offset().left;
-        const circleTop = $(this).offset().top;
-        const tooltipWidth = this.div.node().getBoundingClientRect().width;
-        const tooltipHeight = this.div.node().getBoundingClientRect().height;
+            let str = "Most viewed on: ";
+            if (d.granularity != null)
+            	str = "On: "
 
-        // If the tooltip sticks out of the scatterplot's top border if
-        // placed above the circle, it is placed under the circle instead.
-        const tooltipTop = circleTop - 1.1 * tooltipHeight;
-        if (tooltipTop < rectTopBorder)
-        	this.div.style("top", circleTop + 0.4 * tooltipHeight + "px");
-        else
-        	this.div.style("top", tooltipTop + "px");
-        
+	        this.div.html(  "<div><u>" + cleanArticleName(d.article_name) +
+						  	"</u></div>" +
+	        				"Total views: " + viewsFormat(d.view_count) +
+	    					"<br/>" +
+	        			 	str + dateFormat(d.peak_date));
 
-        const tooltipLeft = circleLeft - 0.4 * tooltipWidth;
-		this.div.style("left", tooltipLeft + "px");
+	        const rect = d3.select("rect").node().getBoundingClientRect();
+	        const rectTopBorder = rect.top;
+	        const rectLeftBorder = rect.left;
+	        const rectRightBorder = rect.right;
+	        const circleLeft = $(this).offset().left;
+	        const circleTop = $(this).offset().top;
+	        const tooltipWidth = this.div.node().getBoundingClientRect().width;
+	        const tooltipHeight = this.div.node().getBoundingClientRect().height;
+
+	        // If the tooltip sticks out of the scatterplot's top border if
+	        // placed above the circle, it is placed under the circle instead.
+	        const tooltipTop = circleTop - 1.1 * tooltipHeight;
+	        if (tooltipTop < rectTopBorder)
+	        	this.div.style("top", circleTop + 0.4 * tooltipHeight + "px");
+	        else
+	        	this.div.style("top", tooltipTop + "px");
+	        
+
+	        const tooltipLeft = circleLeft - 0.4 * tooltipWidth;
+			this.div.style("left", tooltipLeft + "px");
+		}
     }
 
 
@@ -249,12 +247,6 @@ class ScatterPlot {
 					.attr("r", 2.5)
 					.style("stroke", "#484747")
 					.style("stroke-width", "0.2");
-
-			// TODO Not needed?
-			// Bring the corresponding article in the list to its
-			// initial form
-			// d3.select("#li_" + d.article_id)
-			// 	.style("color", "#e6e6e6")
 		}
 
 		// Hide tooltip
@@ -267,10 +259,20 @@ class ScatterPlot {
      // Function to be called when user clicks on a circle
     onClick(d) {
 
+    	function showArticleList() {
+
+    		// Show list of top articles
+    		d3.select("#list-top-articles")
+			  .transition()
+			  .duration(300)
+			  .style("height", "425px");
+
+		  	this.remove();
+    	}
+
     	// Deselect other articles
-    	const circles = d3.selectAll(".article-clicked")
-    	circles.classed("article-clicked", false);
-    	circles.dispatch("mouseout");
+    	const circles_clicked = d3.selectAll(".article-clicked")
+    	circles_clicked.classed("article-clicked", false);
 
     	const circle = d3.select("#article_" + d.article_id);
 
@@ -282,11 +284,27 @@ class ScatterPlot {
 				
 		circle.classed("article-clicked", true);
 
+		// Append close button
+		const close_button = d3.select("#article-summary")
+							  	.append("div")
+							  	.style("word_wrap", "normal")
+							  	.style("width", "100%")
+							  	.append("button")
+						          	.attr("type", "button")
+						          	.classed("btn", true)
+						          	.classed("btn-light", true)
+						          	.on("click", showArticleList)
+					          	.append("i")
+					          		.classed("fas fa-chevron-left", true);
+
+  		close_button.text(" Show top 50 articles");
+
     	// Show article summary
     	d3.select("#article-summary")
+    		.append("div")
 			// .text(d.article_summary);   //TODO Bring back
 			// TODO Remove
-			.html("<div><u>" + cleanArticleName(d.article_name) + "</u></div>" +
+			.html("<br><div><u>" + cleanArticleName(d.article_name) + "</u></div>" +
 				  "Lorem ipsum dolor sit amet, consectetur adipiscing" +
 				  " elit, sed do eiusmod tempor incididunt ut labore" + 
 				  " et dolore magna aliqua. Ut enim ad minim veniam," + 
@@ -296,6 +314,86 @@ class ScatterPlot {
 				  "cillum dolore eu fugiat nulla pariatur. " + 
 				  "<a target='_blank' href='https://en.wikipedia.org/wiki/" + 
 				  d.article_name + "'> (View more) </a>");
+
+
+		// Delete all circles to prepare for single article view
+		const circles = d3.selectAll("circle");
+		circles.classed("deleted", true);
+
+		circles.transition()
+			   .duration(200)
+			   .style("opacity", "0")
+			   .remove();
+
+	   	// Remove all trailing tooltips
+	   	d3.selectAll(".tooltip")
+   		  .transition()		
+		  .duration(500)
+		  .style("opacity", 0)
+		  .remove();
+
+	  	// Hide list of top articles
+		d3.select("#list-top-articles")
+		  .transition()
+		  .duration(200)
+		  .style("height", "0px");
+
+	   	// Show single article view
+	    showArticleProgress(d.article_name);
+    }
+
+    singleArticleView(dom, data) {
+
+    	console.log("Single article view")
+
+    	// Expand plot domain by 2 days, so that circles
+		// won't fall on the plot's borders
+		// let domain = [];
+		
+		// domain[0] = new Date(dom[0]);
+		// domain[0].setDate(domain[0].getDate() - 1);
+		
+		// domain[1] = new Date(dom[1]);
+		// domain[1].setDate(domain[1].getDate() + 1);
+
+		// Update xScale domain
+		// this.xScale.domain(domain);
+
+		// Update circles
+		let circles = this.focus_area.selectAll("circle")
+									 // Bind each svg circle to a 
+									 // unique data element
+									 .data(data, d => d.article_id);
+
+
+		// // Update()
+		// circles.transition()
+	 //            .attr("cx", d => this.xScale(d.peak_date))
+	 //            .attr("cy", d => this.yScale(d.view_count))
+	 //            .attr("fill", d => this.color_gradient(d.view_count));
+
+        // Enter() 
+		circles.enter()
+				.append("circle")
+					.attr("id", d => "article_" + d.article_id)
+					.attr("r", 0)
+					.attr("cx", d => this.xScale(d.peak_date))
+					.attr("cy", d => this.yScale(d.view_count))
+					.attr("fill", "#a50f15")
+					// Tooltip behaviour
+					.on("mouseover", this.onMouseOver)					
+			        .on("mouseout", this.onMouseOut)
+  				.transition()
+					.attr("r", 2.5);
+		
+		// Exit() 
+		circles.exit()
+				.transition()
+					.attr("r", 0)
+				.remove();
+
+		// Update x axis
+		// this.focus_area.select(".axis.axis-x").call(this.xAxis);
     }
 }
 

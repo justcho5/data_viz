@@ -276,7 +276,7 @@ circle {
 	cursor: pointer;
 }
 
-circle:not(.article-selected) {
+/*circle:not(.article-selected) {
 	
 	opacity: 0.3;
 }
@@ -284,13 +284,15 @@ circle:not(.article-selected) {
 .article-selected {
 
 	opacity: 2.0;
-}
+}*/
 
-.zoom {
+
+/*TODO Remove*/
+/*.zoom {
 
 	cursor: move;
 	pointer-events: all;
-}
+}*/
 
 div.tooltip {
 

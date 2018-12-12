@@ -1,7 +1,7 @@
 // Read data from REST API
-
-const articles_url = "https://fivelinks.io/dataviz/topArticles";
  
+const articles_url = "https://fivelinks.io/dataviz/topArticles";
+
 function whenDocumentLoaded(action) {
 
 	if (document.readyState === "loading") {
@@ -15,23 +15,26 @@ function whenDocumentLoaded(action) {
 
 whenDocumentLoaded(() => {
 
+	// Initial date
 	const url = articles_url + "/2014/10/2015/03";
-	loadJSON(url, createPlotAndCategories);
+	loadJSON(url, showTopArticles);
 });
 
+let scatterplot;
+let brush_area;
+let article_list;
 
-function createPlotAndCategories(data) {
+function showTopArticles(data) {
 
 	// TODO Remove
 	data.forEach(d => d["peak_date"] = createRandomDate());
-	data.forEach(d => d["main_category"] = assignRandomCategory());
 
 	// Dimensions
 	const width = 400;
 	const height = 200;
 	
 	// Scatterplot creation
-	let scatterplot = new ScatterPlot("scatterplot", data, width, height);
+	scatterplot = new ScatterPlot("scatterplot", data, width, height);
 	
 	// Brush area creation
 	let brushHeight = 20;
@@ -39,10 +42,10 @@ function createPlotAndCategories(data) {
 			        .extent([[0, 0], [width, brushHeight]])
 			        .on("end", brushed);
 
-	let brush_area = new BrushArea(height + 3, width, brushHeight, brush);
+	brush_area = new BrushArea(height + 3, width, brushHeight, brush);
 
 	// Creation of list of top articles
-	let article_list = new ArticleList("list-top-articles", data);
+	article_list = new ArticleList("list-top-articles", data);
 
     function brushed() {
 
@@ -67,10 +70,8 @@ function createPlotAndCategories(data) {
 
 			// TODO Remove
 			data.forEach(d => d["peak_date"] = createRandomDate(domain));
-			data.forEach(d => d["main_category"] = assignRandomCategory());
 
 			scatterplot.updateCircles(domain, data)
-			// article_categories.updateCategories(data); //TODO Remove
 			article_list.updateArticleList(data);
 		});
 		
@@ -90,15 +91,4 @@ function createRandomDate(dom) {
 
 	return new Date(domain[0].getTime() + 
 			Math.random() * (domain[1].getTime() - domain[0].getTime()));
-}
-
-//TODO Remove
-function assignRandomCategory() {
-
-	
-	const categories = [ "Arts", "Culture", "Education", "Events",
-						 "Geography", "Health", "History", "Humanities",
-						 "Language", "Law", "Life", "Mathematics"];
-
-	return categories[Math.round(Math.random() * (categories.length - 1))];
 }

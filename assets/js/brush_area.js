@@ -4,7 +4,7 @@ class BrushArea {
 
 		const brush_area = d3.select("#scatterplot").append("g");
 
-		const xBrushRange = [new Date(2013, 0, 1), new Date(2018, 0, 1)];
+		const xBrushRange = [new Date(2013, 0, 1), new Date(2019, 0, 1)];
 		this.xBrushScale = d3.scaleTime()
 		    				.domain(xBrushRange)
 		    				.rangeRound([0, width]);
