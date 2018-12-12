@@ -248,7 +248,7 @@ class ScatterPlot {
             	r = 2;
 
 			circle.transition()
-					.attr("r", 2.5)
+					.attr("r", r)
 					.style("stroke", "#484747")
 					.style("stroke-width", "0.2");
 		}
@@ -263,16 +263,19 @@ class ScatterPlot {
      // Function to be called when user clicks on a circle
     onClick(d) {
 
-    	function showArticleList() {
+    	function updateRightPanel() {
 
-    		// Show list of top articles
-    		d3.select("#list-top-articles")
+			// Show list of top articles
+			d3.select("#list-top-articles")
 			  .transition()
-			  .duration(300)
+			  .duration(500)
 			  .style("height", "425px");
 
+		  	d3.select("#article-summary")
+	  			.html("");
+
 		  	this.remove();
-    	}
+		}
 
     	// Deselect other articles
     	const circles_clicked = d3.selectAll(".article-clicked")
@@ -297,27 +300,36 @@ class ScatterPlot {
 						          	.attr("type", "button")
 						          	.classed("btn", true)
 						          	.classed("btn-light", true)
-						          	.on("click", showArticleList)
+						          	.on("click", updateRightPanel)
 					          	.append("i")
 					          		.classed("fas fa-chevron-left", true);
 
-  		close_button.text(" Show top 50 articles");
+  		close_button.text(" Back to top articles");
 
     	// Show article summary
-    	d3.select("#article-summary")
-    		.append("div")
-			// .text(d.article_summary);   //TODO Bring back
+    	const sum = d3.select("#article-summary")
+    	sum.append("br");
+		sum.append("div")
+			.style("font-size", "18px")
+			.append("u")
+			.text(cleanArticleName(d.article_name));
+		
+		sum.append("div")
+			//TODO Bring back
+			// .text(d.article_summary);
 			// TODO Remove
-			.html("<br><div><u>" + cleanArticleName(d.article_name) + "</u></div>" +
-				  "Lorem ipsum dolor sit amet, consectetur adipiscing" +
+			.text("Lorem ipsum dolor sit amet, consectetur adipiscing" +
 				  " elit, sed do eiusmod tempor incididunt ut labore" + 
 				  " et dolore magna aliqua. Ut enim ad minim veniam," + 
 				  " quis nostrud exercitation ullamco laboris nisi ut" + 
 				  " aliquip ex ea commodo consequat. Duis aute irure" + 
 				  " dolor in reprehenderit in voluptate velit esse " +
-				  "cillum dolore eu fugiat nulla pariatur. " + 
-				  "<a target='_blank' href='https://en.wikipedia.org/wiki/" + 
-				  d.article_name + "'> (View more) </a>");
+				  "cillum dolore eu fugiat nulla pariatur. ")
+			.append("a")
+			.attr("target", "_blank")
+			.attr("href", "https://en.wikipedia.org/wiki/" + 
+							d.article_name)
+			.text("(View more)");
 
 
 		// Delete all circles to prepare for single article view
@@ -339,12 +351,13 @@ class ScatterPlot {
 	  	// Hide list of top articles
 		d3.select("#list-top-articles")
 		  .transition()
-		  .duration(200)
+		  .duration(500)
 		  .style("height", "0px");
 
 	   	// Show single article view
 	    showArticleProgress(d.article_name);
     }
+
 
     singleArticleView(dom, data) {
 
@@ -363,12 +376,25 @@ class ScatterPlot {
 		// Update xScale domain
 		// this.xScale.domain(domain);
 
-		// TODO Bring back
+
+		// Generate line
+		let line = d3.line()
+		    		.x(d => this.xScale(d.peak_date))
+		    		.y(d => this.yScale(d.view_count))
+		    		.curve(d3.curveMonotoneX);
+
+		
+		// Append line to plot 
+		this.focus_area.append("path")
+					    .datum(data)
+					    .attr("class", "line")
+					    .attr("d", line);
+
 		// Update circles
-		// let circles = this.focus_area.selectAll("circle")
-		// 							 // Bind each svg circle to a 
-		// 							 // unique data element
-		// 							 .data(data, d => d.article_id);
+		let circles = this.focus_area.selectAll("circle")
+									 // Bind each svg circle to a 
+									 // unique data element
+									 .data(data, d => d.article_id);
 
 
 		// // Update()
@@ -378,63 +404,29 @@ class ScatterPlot {
 	 //            .attr("fill", d => this.color_gradient(d.view_count));
 
 
-	 	// TODO Bring back
         // Enter() 
-		// circles.enter()
-		// 		.append("circle")
-		// 			.attr("id", d => "article_" + d.article_id)
-		// 			.attr("r", 0)
-		// 			.attr("cx", d => this.xScale(d.peak_date))
-		// 			.attr("cy", d => this.yScale(d.view_count))
-		// 			.attr("fill", "#a50f15")
-		// 			// Tooltip behaviour
-		// 			.on("mouseover", this.onMouseOver)					
-		// 	        .on("mouseout", this.onMouseOut)
-  // 				.transition()
-		// 			.attr("r", 2.5);
+		circles.enter()
+				.append("circle")
+					.attr("id", d => "article_" + d.article_id)
+					.attr("r", 0)
+					.attr("cx", d => this.xScale(d.peak_date))
+					.attr("cy", d => this.yScale(d.view_count))
+					.attr("fill", "#a50f15")
+					// Tooltip behaviour
+					.on("mouseover", this.onMouseOver)					
+			        .on("mouseout", this.onMouseOut)
+  				.transition()
+					.attr("r", 2);
 
-		// TODO Bring back
 		// Exit() 
-		// circles.exit()
-		// 		.transition()
-		// 			.attr("r", 0)
-		// 		.remove();
+		circles.exit()
+				.transition()
+					.attr("r", 0)
+				.remove();
 
 		// Update x axis
 		// this.focus_area.select(".axis.axis-x").call(this.xAxis);
 
-// -----------------------------------------------------------------------
-
-		// DOKIMI!!!!!
-
-		// 7. d3's line generator
-		let line = d3.line()
-		    		.x(d => this.xScale(d.peak_date)) // set the x values for the line generator
-		    		.y(d => this.yScale(d.view_count)) // set the y values for the line generator 
-		    		.curve(d3.curveMonotoneX); // apply smoothing to the line
-
-		
-		// 9. Append the path, bind the data, and call the line generator 
-		this.focus_area.append("path")
-					    .datum(data) // 10. Binds data to the line 
-					    .attr("class", "line") // Assign a class for styling 
-					    .attr("d", line); // 11. Calls the line generator 
-
-		// 12. Appends a circle for each datapoint 
-		this.focus_area.selectAll(".circle")
-					    .data(data)
-					  	.enter()
-					  		.append("circle")
-								.attr("id", d => "article_" + d.article_id)
-								.attr("r", 0)
-								.attr("cx", d => this.xScale(d.peak_date))
-								.attr("cy", d => this.yScale(d.view_count))
-								.attr("fill", "#a50f15")
-								// Tooltip behaviour
-								.on("mouseover", this.onMouseOver)					
-						        .on("mouseout", this.onMouseOut)
-			  				.transition()
-								.attr("r", 2);
     }
 }
 
