@@ -1,8 +1,8 @@
 // Read data from REST API
  
 // TODO Bring back 
-// const articles_url = "https://fivelinks.io/dataviz/topArticles";
-const articles_url = "http://0.0.0.0:5000/topArticles"; //TODO Remove
+const articles_url = "https://fivelinks.io/dataviz/topArticles";
+// const articles_url = "http://0.0.0.0:5000/topArticles"; //TODO Remove
 
 // Initial date  //TODO Change appropriately
 // WATCH OUT! Month is an index, beginning from 0 !!
