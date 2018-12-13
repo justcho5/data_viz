@@ -57,6 +57,7 @@ class BrushArea {
 		// and ends on the last day of the last selected month
 		d1[1].setDate(d1[1].getDate() - 1);
 
+		// Save brush selection
 		this.brush_selection = d1;
 
 		return d1;
@@ -66,12 +67,4 @@ class BrushArea {
 
 		return this.brush_selection;
 	}
-
-	// clearBrush() {
-
-	// 	// d3.selectAll(".brush-area")
-	// 	//   .call(brush.move, null);
-
-	// 	d3.selectAll(".brush").call(brush_area.clear());
-	// }
 }

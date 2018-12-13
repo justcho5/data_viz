@@ -4,8 +4,6 @@ class ScatterPlot {
 	constructor(svg_element_id, data, width, height, xRange) {
 		
 		// Ranges & Scales
-		// TODO set to correct initial dates
-		// const xRange = [new Date(2012, 11, 1), new Date(2019, 1, 1)];
 		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
 
 		this.xScale = d3.scaleTime()
@@ -140,18 +138,37 @@ class ScatterPlot {
 		// Update x axis
 		this.updateXAxis(dom);
 
-		// Generate line
+		// Remove previous lines
+		d3.selectAll(".line")
+			.remove();
+
+		// Generate new line
 		let line = d3.line()
 		    		.x(d => this.xScale(d.peak_date))
 		    		.y(d => this.yScale(d.view_count))
 		    		.curve(d3.curveMonotoneX);
 
 		
+		// TODO Remove, if we re keeping the line animation
 		// Append line to plot 
-		this.focus_area.append("path")
-					    .datum(data)
-					    .attr("class", "line")
-					    .attr("d", line);
+		// this.focus_area.append("path")
+		// 			    .datum(data)
+		// 			    .attr("class", "line");
+		// 			    .attr("d", line);
+
+		// Animate addition of new paths
+		const path = this.focus_area.append("path")
+					      .attr("d", line(data))
+					      .attr("class", "line");
+
+	    const totalLength = path.node().getTotalLength();
+
+	    path.attr("stroke-dasharray", totalLength + " " + totalLength)
+			.attr("stroke-dashoffset", totalLength)
+			.transition()
+			.duration(2000)
+			.attr("stroke-dashoffset", 0);
+
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
@@ -258,9 +275,8 @@ class ScatterPlot {
 		  	// Clear everything from plot
 		  	clearPlot();
 
-		  	// TODO Don't know what I am doing! Maybe remove!
-		  	// brush_area.clearBrush();
-		  	loadTopArticlesView(null, updateTopArticlesView);
+		  	const domain = brush_area.getBrushSelection();
+		  	loadTopArticlesView(domain, updateTopArticlesView);
 		}
 
 		function showArticleSummary(d) {

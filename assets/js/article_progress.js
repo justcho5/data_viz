@@ -3,7 +3,7 @@
 function loadArticleProgress(article_name) {
 
 	if (article_name != null)
-		this.article_name = article_name;
+		loadArticleProgress.article_name = article_name;
 
 	// Set state to single article view
 	state = "SingleArticle";
@@ -15,19 +15,17 @@ function loadArticleProgress(article_name) {
 	const yearFormat = d3.timeFormat("%Y");
 
 	// Get domain from brush
-	// let domain =  d3.brushSelection(d3.select(".brush").node()) ;
 	let domain =  brush_area.getBrushSelection();
 
 	// If no area is selected in the brush, aka we are in the initial top
 	// articles view, we set the domain to the maximum range of dates for
 	// which we have data.
-	if (domain == null) {
-		console.log("Bika edw");
+	if (domain == null)
 		domain = initial_dates;
-	}
+
 	console.log(domain);
 
-	const url = daily_views_url + this.article_name
+	const url = daily_views_url + loadArticleProgress.article_name
 									  .replace(/\\/g, "")
 									  .replace(/[!'()*]/g, escape)					
 					 	  		+ "/monthly/"

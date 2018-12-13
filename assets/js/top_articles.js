@@ -90,12 +90,13 @@ function initTopArticlesView(domain, data) {
 		// Ignore empty selections.
 		if (!d3.event.selection) return;
 
+		// Update brush and get domain
 		const domain = brush_area.updateBrushArea(this);
-
+		// Update view appropriately.
 		if (state === "TopArticles") 
 			loadTopArticlesView(domain, updateTopArticlesView);
 		else if (state === "SingleArticle")
-			loadArticleProgress(null)
+			loadArticleProgress(null);
 		
 		// events.updateEvents(domain);  //TODO Remove if not needed.
 	}

@@ -8,4 +8,5 @@ let brush_area;
 let article_list;
 
 // State
+// Possible values: ["TopArticles", "SingleArticle", "Neighbours"(?)]
 let state = "TopArticles";
