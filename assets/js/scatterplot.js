@@ -138,7 +138,7 @@ class ScatterPlot {
 	updateSingleArticlePlot(dom, data) {
 
 		// Update x axis
-		// this.updateXAxis(dom);
+		this.updateXAxis(dom);
 
 		// Generate line
 		let line = d3.line()
@@ -241,6 +241,8 @@ class ScatterPlot {
 
     	function returnToTopArticles() {
 
+    		state = "TopArticles";
+
 			// Show list of top articles
 			d3.select("#list-top-articles")
 			  .transition()
@@ -330,7 +332,7 @@ class ScatterPlot {
 		clearPlot();
 
 	   	// Show single article view
-	    showArticleProgress(d.article_name);
+	    loadArticleProgress(d.article_name);
     }
 
 	// Function to be called when user hovers over a circle - shows tooltip

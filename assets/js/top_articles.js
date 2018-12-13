@@ -1,19 +1,3 @@
-// Read data from REST API
- 
-// TODO Bring back 
-const articles_url = "https://fivelinks.io/dataviz/topArticles";
-// const articles_url = "http://0.0.0.0:5000/topArticles"; //TODO Remove
-
-// Initial date  //TODO Change appropriately
-// WATCH OUT! Month is an index, beginning from 0 !!
-const initial_dates = [new Date(2014, 0, 1), new Date(2018, 10, 30)]
-
-// View elements
-let scatterplot;
-let brush_area;
-let article_list;
-
-// --------------------------------------------------------------------
 
 function whenDocumentLoaded(action) {
 
@@ -33,6 +17,10 @@ whenDocumentLoaded(() => {
 
 
 function loadTopArticlesView(domain, callback) {
+
+	// TODO Bring back 
+	const articles_url = "https://fivelinks.io/dataviz/topArticles";
+	// const articles_url = "http://0.0.0.0:5000/topArticles"; //TODO Remove
 
 	if (domain == null)
 		domain = initial_dates;
@@ -72,7 +60,6 @@ function loadTopArticlesView(domain, callback) {
 	});
 }
 
-
 function initTopArticlesView(domain, data) {
 
 	// Dimensions
@@ -84,8 +71,8 @@ function initTopArticlesView(domain, data) {
 	scatterplot.updateTopArticlesPlot(domain, data);
 
 	// Brush area creation
-	let brushHeight = 20;
-	let brush = d3.brushX()
+	const brushHeight = 20;
+	const brush = d3.brushX()
 	          .extent([[0, 0], [width, brushHeight]])
 	          .on("end", brushed);
 
@@ -105,7 +92,10 @@ function initTopArticlesView(domain, data) {
 
 		const domain = brush_area.updateBrushArea(this);
 
-		loadTopArticlesView(domain, updateTopArticlesView);
+		if (state === "TopArticles") 
+			loadTopArticlesView(domain, updateTopArticlesView);
+		else if (state === "SingleArticle")
+			loadArticleProgress(null)
 		
 		// events.updateEvents(domain);  //TODO Remove if not needed.
 	}
