@@ -1,6 +1,19 @@
 // Read data from REST API
  
-const articles_url = "https://fivelinks.io/dataviz/topArticles";
+// TODO Bring back 
+// const articles_url = "https://fivelinks.io/dataviz/topArticles";
+const articles_url = "http://0.0.0.0:5000/topArticles"; //TODO Remove
+
+// Initial date  //TODO Change appropriately
+// WATCH OUT! Month is an index, beginning from 0 !!
+const initial_dates = [new Date(2014, 0, 1), new Date(2018, 10, 30)]
+
+// View elements
+let scatterplot;
+let brush_area;
+let article_list;
+
+// --------------------------------------------------------------------
 
 function whenDocumentLoaded(action) {
 
@@ -15,34 +28,69 @@ function whenDocumentLoaded(action) {
 
 whenDocumentLoaded(() => {
 
-	// Initial date
-	const url = articles_url + "/2014/10/2015/03";
-	loadJSON(url, showTopArticles);
+	loadTopArticlesView(initial_dates, initTopArticlesView);
 });
 
-let scatterplot;
-let brush_area;
-let article_list;
 
-function showTopArticles(data) {
+function loadTopArticlesView(domain, callback) {
 
-	// TODO Remove
-	data.forEach(d => d["peak_date"] = createRandomDate());
+	if (domain == null)
+		domain = initial_dates;
+
+	//TODO Remove
+	function createRandomDate(dom) {
+
+		let d = [];
+		if (dom[0] < initial_dates[0]) 
+			d[0] = initial_dates[0];
+		else
+			d[0] = dom[0];
+		if (dom[1] > initial_dates[1]) 
+			d[1] = initial_dates[1]; 
+		else
+			d[1] = dom[1];
+
+		return new Date(d[0].getTime() + 
+				Math.random() * (d[1].getTime() - d[0].getTime()));
+	}
+
+
+	const monthFormat = d3.timeFormat("%m");
+	const yearFormat = d3.timeFormat("%Y");
+
+	const url = articles_url + "/" + yearFormat(domain[0])
+							 + "/" + monthFormat(domain[0])
+							 + "/" + yearFormat(domain[1])	
+							 + "/" + monthFormat(domain[1]);
+
+	loadJSON(url, function(data) {
+
+		// TODO Remove
+		data.forEach(d => d["peak_date"] = createRandomDate(domain));
+
+		callback(domain, data);
+	});
+}
+
+
+function initTopArticlesView(domain, data) {
 
 	// Dimensions
 	const width = 400;
 	const height = 200;
 	
 	// Scatterplot creation
-	scatterplot = new ScatterPlot("scatterplot", data, width, height);
-	
+	scatterplot = new ScatterPlot("scatterplot", data, width, height, domain);
+	scatterplot.updateTopArticlesPlot(domain, data);
+
 	// Brush area creation
 	let brushHeight = 20;
 	let brush = d3.brushX()
-			        .extent([[0, 0], [width, brushHeight]])
-			        .on("end", brushed);
+	          .extent([[0, 0], [width, brushHeight]])
+	          .on("end", brushed);
 
-	brush_area = new BrushArea(height + 3, width, brushHeight, brush);
+	brush_area = new BrushArea(height + 3, width, brushHeight, 
+								domain, brush);
 
 	// Creation of list of top articles
 	article_list = new ArticleList("list-top-articles", data);
@@ -57,38 +105,14 @@ function showTopArticles(data) {
 
 		const domain = brush_area.updateBrushArea(this);
 
-		let monthFormat = d3.timeFormat("%m");
-		let yearFormat = d3.timeFormat("%Y");
-
-		const url = articles_url
-					+ "/" + yearFormat(domain[0])
-					+ "/" + monthFormat(domain[0])
-				 	+ "/" + yearFormat(domain[1])
-				 	+ "/" + monthFormat(domain[1]);
-
-		loadJSON(url, function(data) {
-
-			// TODO Remove
-			data.forEach(d => d["peak_date"] = createRandomDate(domain));
-
-			scatterplot.updateCircles(domain, data)
-			article_list.updateArticleList(data);
-		});
+		loadTopArticlesView(domain, updateTopArticlesView);
 		
 		// events.updateEvents(domain);  //TODO Remove if not needed.
 	}
 }
 
-//TODO Remove
-function createRandomDate(dom) {
+function updateTopArticlesView(domain, data) {
 
-	let domain = [new Date(2014, 9, 1), new Date(2015, 2, 31)];
-	if (dom !== undefined) {
-
-		if (dom[0] > domain[0]) domain[0] = dom[0];
-		if (dom[1] < domain[1]) domain[1] = dom[1]; 
-	}
-
-	return new Date(domain[0].getTime() + 
-			Math.random() * (domain[1].getTime() - domain[0].getTime()));
+	scatterplot.updateTopArticlesPlot(domain, data)
+	article_list.updateArticleList(data);
 }

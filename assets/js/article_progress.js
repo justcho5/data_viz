@@ -5,11 +5,23 @@ function showArticleProgress(article_name) {
 	const daily_views_url = "https://wikimedia.org/api/rest_v1/metrics/pageviews/" + 
 							"per-article/en.wikipedia.org/all-access/user/";
 
+	const monthFormat = d3.timeFormat("%m");
+	const yearFormat = d3.timeFormat("%Y");
+
 	// TODO Change initial date?
 	loadJSON(daily_views_url + article_name
 								.replace(/\\/g, "")
 								.replace(/[!'()*]/g, escape)					
-							 + "/monthly/20170101/20181210", 
+							 + "/monthly/"
+							 + "20170101/20180101",  //TODO Remove
+
+							 // TODO Bring back
+							 // + yearFormat(initial_dates[0])
+							 // + monthFormat(initial_dates[0])
+							 // + "01/"
+							 // + yearFormat(initial_dates[1])
+							 // + monthFormat(initial_dates[1])
+							 // + "01", 
 	function(data) {
 
 		function parseDate(str) {
@@ -36,6 +48,6 @@ function showArticleProgress(article_name) {
 		});
 
 		// Update scatterplot
-		scatterplot.singleArticleView(null, data);
+		scatterplot.updateSingleArticlePlot(null, data);
 	})
 }
