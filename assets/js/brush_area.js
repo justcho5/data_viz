@@ -1,10 +1,13 @@
 class BrushArea {
 
-	constructor(y, width, brushHeight, brush) {
+	constructor(y, width, brushHeight, xBrushRange, brush) {
 
-		const brush_area = d3.select("#scatterplot").append("g");
+		this.brush_selection = null;
 
-		const xBrushRange = [new Date(2013, 0, 1), new Date(2018, 0, 1)];
+		const brush_area = d3.select("#scatterplot")
+							 .append("g");
+		brush_area.classed("brush-area");
+
 		this.xBrushScale = d3.scaleTime()
 		    				.domain(xBrushRange)
 		    				.rangeRound([0, width]);
@@ -54,6 +57,21 @@ class BrushArea {
 		// and ends on the last day of the last selected month
 		d1[1].setDate(d1[1].getDate() - 1);
 
+		this.brush_selection = d1;
+
 		return d1;
 	}
+
+	getBrushSelection() {
+
+		return this.brush_selection;
+	}
+
+	// clearBrush() {
+
+	// 	// d3.selectAll(".brush-area")
+	// 	//   .call(brush.move, null);
+
+	// 	d3.selectAll(".brush").call(brush_area.clear());
+	// }
 }
