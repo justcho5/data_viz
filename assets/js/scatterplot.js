@@ -28,14 +28,15 @@ class ScatterPlot {
 					.attr("id", "canvas");
 
 		// Create and append X axis
-		let xAxisHeight = height - 10;
+		this.xAxisHeight = height - 10;
 		this.xAxis = d3.axisBottom(this.xScale)
 						.tickSize(2)
 						.ticks(6);
 
 		this.focus_area.append("g")
 					   .classed("axis axis-x", true)
-					   .attr("transform", "translate(0," + xAxisHeight + ")")
+					   .attr("transform", "translate(0," + 
+					   								this.xAxisHeight + ")")
 	      			   .call(this.xAxis);
 
 		// Create Y axis	
@@ -48,7 +49,6 @@ class ScatterPlot {
 					    })
 					    .tickPadding(6);
 
-		//JUSTINA	
 
 		// Color gradient for datapoints based on y scale
 		const grad_scale = [yRange[0], (yRange[0] + yRange[1])/2, yRange[1]]
@@ -79,13 +79,12 @@ class ScatterPlot {
 						  	.attr("stop-color", d => d.color);
 
       	 this.focus_area.append("rect")
+      	 				.attr("id", "color-legend")
       	 				.attr("x", -14)
       	 				.attr("y", -10)
       	 				.attr("width", 14)
       	 				.attr("height", height)
       	 				.style("fill", "url(#linear-gradient)");
-
-		//JUSTINA
 
 		// Append Y axis
 		this.focus_area.append("g")
@@ -97,6 +96,10 @@ class ScatterPlot {
 
 		// Update x axis
 		this.updateXAxis(dom);
+
+		// Add color legend back, in case it has been removed
+		d3.select("#color-legend")
+		  .style("display", "initial");
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
@@ -138,6 +141,10 @@ class ScatterPlot {
 		// Update x axis
 		this.updateXAxis(dom);
 
+		// Remove color legend
+		d3.select("#color-legend")
+		  .style("display", "none");
+
 		// Remove previous lines
 		d3.selectAll(".line")
 			.remove();
@@ -148,15 +155,7 @@ class ScatterPlot {
 		    		.y(d => this.yScale(d.view_count))
 		    		.curve(d3.curveMonotoneX);
 
-		
-		// TODO Remove, if we re keeping the line animation
-		// Append line to plot 
-		// this.focus_area.append("path")
-		// 			    .datum(data)
-		// 			    .attr("class", "line");
-		// 			    .attr("d", line);
-
-		// Animate addition of new paths
+		// Animate addition of new line
 		const path = this.focus_area.append("path")
 					      .attr("d", line(data))
 					      .attr("class", "line");
@@ -166,7 +165,7 @@ class ScatterPlot {
 	    path.attr("stroke-dasharray", totalLength + " " + totalLength)
 			.attr("stroke-dashoffset", totalLength)
 			.transition()
-			.duration(2000)
+			.duration(1000)
 			.attr("stroke-dashoffset", 0);
 
 
@@ -194,8 +193,9 @@ class ScatterPlot {
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOverCircle)					
 			        .on("mouseout", this.onMouseOutCircle)
-			        // Selected article behaviour
-			        .on("click", this.onClickCircle)
+			        // TODO Remove...
+			        // // Selected article behaviour
+			        // .on("click", this.onClickCircle)
   				.transition()
 					.attr("r", 2);
 
@@ -223,6 +223,26 @@ class ScatterPlot {
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
+
+		// TEST highlight rectangle
+
+
+    }
+
+    highlightPartOfAxis(domain, color) {
+
+    	console.log(domain);
+
+	    this.focus_area
+	    	.append("rect")
+	    	.classed("event-highlight", true)
+	    	.attr("x", this.xScale(domain[0]))
+	    	.attr("y", this.xAxisHeight)
+	    	.attr("width", this.xScale(domain[1]) - 
+	    					this.xScale(domain[0]))
+	    	.attr("height", 2)
+	    	.style("fill", color)
+	    	.style("opacity", "0.5");
     }
 
     // --------- On-event callbacks -------//
@@ -361,10 +381,12 @@ class ScatterPlot {
 			// Highlight selected circle
 			d3.select("#article_" + d.article_id)
 				.transition()
-				.attr("r", 2.7)
+				.duration(100)
+				.attr("r", 3)
 				.style("stroke", "Goldenrod")
 				.style("stroke-width", "0.8");
 
+			// Show tooltip
 			let dateFormat = d3.timeFormat("%d %b %Y");
 			let viewsFormat = d3.format(",");
 
@@ -378,7 +400,7 @@ class ScatterPlot {
 		            .style("opacity", .9);
 
             let str = "Most viewed on: ";
-            if (d.granularity != null)
+            if (state === "SingleArticle")
             	str = "On: ";
 
 	        this.div.html(  "<div><u>" + cleanArticleName(d.article_name) +
@@ -420,7 +442,7 @@ class ScatterPlot {
 		if (circle.classed("article-clicked") != true) {
 
 			let r = 2.5;
-            if (d.granularity != null)
+            if (state === "SingleArticle")
             	r = 2;
 
 			circle.transition()

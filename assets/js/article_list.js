@@ -37,7 +37,8 @@ class ArticleList {
 		// Highlight selected circle
 		d3.select("#article_" + d.article_id)
 			.transition()
-			.attr("r", 2.7)
+			.duration(10)
+			.attr("r", 3)
 			.style("stroke", "Goldenrod")
 			.style("stroke-width", "0.8");
 	}

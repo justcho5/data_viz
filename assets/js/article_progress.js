@@ -23,8 +23,6 @@ function loadArticleProgress(article_name) {
 	if (domain == null)
 		domain = initial_dates;
 
-	console.log(domain);
-
 	const url = daily_views_url + loadArticleProgress.article_name
 									  .replace(/\\/g, "")
 									  .replace(/[!'()*]/g, escape)					

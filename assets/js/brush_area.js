@@ -38,7 +38,7 @@ class BrushArea {
 			    .call(brush);
 	}
 
-	updateBrushArea(brush) {
+	refineBrushSelection(brush) {
 
 		let d0 = d3.event.selection.map(this.xBrushScale.invert),
 	  		d1 = d0.map(d3.timeMonth.round);
@@ -50,6 +50,10 @@ class BrushArea {
 			d1[1] = d3.timeMonth.offset(d1[0]);
 		}
 
+		// Set ignore_event to false, to avoid propagation of brush
+		ignore_event = false;
+
+		// Refine the selection
 		d3.select(brush).transition()
 			.call(d3.event.target.move, d1.map(this.xBrushScale));
 
@@ -61,6 +65,34 @@ class BrushArea {
 		this.brush_selection = d1;
 
 		return d1;
+	}
+
+
+	setBrushSelection(domain) {
+
+		const current_domain = this.brush_selection;
+
+		// If current domain is null, the whole available period is selected
+		// and we don't need to do anything.
+		if (current_domain != null) {
+
+			let dom = []
+			dom[0] = Math.min(domain[0], current_domain[0]);
+			dom[1] = Math.max(domain[1], current_domain[1]);
+
+	 		// Update value of stored brush selection
+		    this.brush_selection = dom;
+
+		    // Set ignore_event to true, to allow brush_end to run, without 
+		    // input event.
+		    ignore_event = true;
+
+		 	// Move brush appropriately
+		 	d3.select(".brush")
+	 		  .transition()
+	 		  .call(brush.move, [this.xBrushScale(dom[0]), 
+	 		  					 this.xBrushScale(dom[1])]);
+		}
 	}
 
 	getBrushSelection() {

@@ -5,8 +5,10 @@ const initial_dates = [new Date(2014, 0, 1), new Date(2018, 10, 30)]
 // Viz elements
 let scatterplot;
 let brush_area;
+let brush;
 let article_list;
 
 // State
 // Possible values: ["TopArticles", "SingleArticle", "Neighbours"(?)]
 let state = "TopArticles";
+let ignore_event = false;
