@@ -136,6 +136,7 @@ class ScatterPlot {
 				.remove();
 	}
 
+
 	updateSingleArticlePlot(dom, data) {
 
 		// Update x axis
@@ -174,7 +175,6 @@ class ScatterPlot {
 									 // Bind each svg circle to a 
 									 // unique data element
 									 .data(data, d => d.article_id);
-
 
 		// Update()
 		circles.transition()
@@ -250,106 +250,6 @@ class ScatterPlot {
     // Function to be called when user clicks on a circle
     onClickCircle(d) {
 
-    	function clearPlot() {
-
-    		// Delete all circles to prepare for single article view
-			const circles = d3.selectAll("circle");
-			circles.classed("deleted", true);
-
-			circles.transition()
-				   .duration(200)
-				   .style("opacity", "0")
-				   .remove();
-
-		   	// Remove all trailing tooltips
-		   	d3.selectAll(".tooltip")
-	   		  .transition()		
-			  .duration(500)
-			  .style("opacity", 0)
-			  .remove();
-
-		  	// Delete path, if it exists
-		  	d3.selectAll(".line")
-		  		.transition()
-		  		.duration(200)
-		  		.style("opacity", 0)
-		  		.remove();
-    	}
-
-    	function returnToTopArticles() {
-
-    		state = "TopArticles";
-
-			// Show list of top articles
-			d3.select("#list-top-articles")
-			  .transition()
-			  .duration(500)
-			  .style("height", "425px");
-
-		    // Hide article summary
-		  	d3.select("#article-summary")
-	  			.html("");
-
-		  	this.remove();
-
-		  	// Clear everything from plot
-		  	clearPlot();
-
-		  	const domain = brush_area.getBrushSelection();
-		  	loadTopArticlesView(domain, updateTopArticlesView);
-		}
-
-		function showArticleSummary(d) {
-
-			// Hide list of top articles
-			d3.select("#list-top-articles")
-			  .transition()
-			  .duration(500)
-			  .style("height", "0px");
-
-			// Append close button
-			const close_button = d3.select("#article-summary")
-								  	.append("div")
-								  	.style("word_wrap", "normal")
-								  	.style("width", "100%")
-								  	.append("button")
-							          	.attr("type", "button")
-							          	.classed("btn", true)
-							          	.classed("btn-light", true)
-							          	.on("click", returnToTopArticles)
-						          	.append("i")
-						          		.classed("fas fa-chevron-left", true);
-
-	  		close_button.text(" Back to top articles");
-
-	    	// Show article summary
-	    	const sum = d3.select("#article-summary")
-	    	sum.append("br");
-			sum.append("div")
-				.style("font-size", "18px")
-				.append("u")
-				.text(cleanArticleName(d.article_name));
-			
-			sum.append("div")
-				//TODO Bring back
-				// .text(d.article_summary);
-				// TODO Remove
-				.text("Lorem ipsum dolor sit amet, consectetur adipiscing" +
-					  " elit, sed do eiusmod tempor incididunt ut labore" + 
-					  " et dolore magna aliqua. Ut enim ad minim veniam," + 
-					  " quis nostrud exercitation ullamco laboris nisi ut" + 
-					  " aliquip ex ea commodo consequat. Duis aute irure" + 
-					  " dolor in reprehenderit in voluptate velit esse " +
-					  "cillum dolore eu fugiat nulla pariatur. ")
-				.append("a")
-				.attr("target", "_blank")
-				.attr("href", "https://en.wikipedia.org/wiki/" + 
-								d.article_name)
-				.text("(View more)");
-		}
-
-		showArticleSummary(d);
-
     	// Deselect other articles
     	const circles_clicked = d3.selectAll(".article-clicked")
     	circles_clicked.classed("article-clicked", false);
@@ -364,11 +264,9 @@ class ScatterPlot {
 				
 		selected_circle.classed("article-clicked", true);
 
-		// Clear everything from plot
-		clearPlot();
-
-	   	// Show single article view
-	    loadArticleProgress(d.article_name);
+		// Prepare and load single article view
+   		// scatterplot.transitionToSingleArticleView(d.article_name);
+   		loadArticleProgress(d.article_name);
     }
 
 	// Function to be called when user hovers over a circle - shows tooltip
@@ -457,6 +355,31 @@ class ScatterPlot {
 				.style("opacity", 0)
 				.remove();
     }
+
+
+    onClickArticleSearch(d) {
+
+    	function showErrorMessage() {
+
+			const error_message = d3.select("#article-search-error-message");
+			error_message.transition()
+			  			 .style("height", "initial");
+
+			error_message.transition()
+						 .delay(1000)
+						 .duration(1000)
+			 			 .style("height", "0px");
+    	}
+    	
+		const user_input = d.property("value");
+
+		const article_name = user_input.replace(/ /g, "_")
+  				   					   .replace(/'/g, "\\'");
+
+		loadArticleProgress(article_name, showErrorMessage);
+	}
 }
+
+
 
 

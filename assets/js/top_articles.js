@@ -53,6 +53,9 @@ function loadTopArticlesView(domain, callback) {
 
 	loadJSON(url, function(data) {
 
+		// Use each article's name as its id.
+		data.forEach(d => d["article_id"] = convertToID(d["article_name"]));
+
 		// TODO Remove
 		data.forEach(d => d["peak_date"] = createRandomDate(domain));
 

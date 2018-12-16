@@ -47,10 +47,14 @@ function select_event(id, name, event_date) {
 		//TODO Just put beginning and end of month instead
 		// Highlight 15 days before and after event on timeline
 		highlight_dates = [];
-		highlight_dates[0] = new Date(yearFormat(date), monthFormat(date),
-					date.getDate() - 15);
-		highlight_dates[1] = new Date(yearFormat(date), monthFormat(date),
-					date.getDate() + 15);
+		// highlight_dates[0] = new Date(yearFormat(date), monthFormat(date),
+		// 			date.getDate() - 15);
+		// highlight_dates[1] = new Date(yearFormat(date), monthFormat(date),
+		// 			date.getDate() + 15);
+
+		highlight_dates[0] = domain[0];
+		highlight_dates[1] = domain[1];
+
 		scatterplot.highlightPartOfAxis(highlight_dates, color);
 
 
