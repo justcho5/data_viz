@@ -4,8 +4,6 @@ class ScatterPlot {
 	constructor(svg_element_id, data, width, height, xRange) {
 		
 		// Ranges & Scales
-		// TODO set to correct initial dates
-		// const xRange = [new Date(2012, 11, 1), new Date(2019, 1, 1)];
 		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
 
 		this.xScale = d3.scaleTime()
@@ -30,14 +28,15 @@ class ScatterPlot {
 					.attr("id", "canvas");
 
 		// Create and append X axis
-		let xAxisHeight = height - 10;
+		this.xAxisHeight = height - 10;
 		this.xAxis = d3.axisBottom(this.xScale)
 						.tickSize(2)
 						.ticks(6);
 
 		this.focus_area.append("g")
 					   .classed("axis axis-x", true)
-					   .attr("transform", "translate(0," + xAxisHeight + ")")
+					   .attr("transform", "translate(0," + 
+					   								this.xAxisHeight + ")")
 	      			   .call(this.xAxis);
 
 		// Create Y axis	
@@ -50,7 +49,6 @@ class ScatterPlot {
 					    })
 					    .tickPadding(6);
 
-		//JUSTINA	
 
 		// Color gradient for datapoints based on y scale
 		const grad_scale = [yRange[0], (yRange[0] + yRange[1])/2, yRange[1]]
@@ -81,13 +79,12 @@ class ScatterPlot {
 						  	.attr("stop-color", d => d.color);
 
       	 this.focus_area.append("rect")
+      	 				.attr("id", "color-legend")
       	 				.attr("x", -14)
       	 				.attr("y", -10)
       	 				.attr("width", 14)
       	 				.attr("height", height)
       	 				.style("fill", "url(#linear-gradient)");
-
-		//JUSTINA
 
 		// Append Y axis
 		this.focus_area.append("g")
@@ -99,6 +96,10 @@ class ScatterPlot {
 
 		// Update x axis
 		this.updateXAxis(dom);
+
+		// Add color legend back, in case it has been removed
+		d3.select("#color-legend")
+		  .style("display", "initial");
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
@@ -135,30 +136,45 @@ class ScatterPlot {
 				.remove();
 	}
 
+
 	updateSingleArticlePlot(dom, data) {
 
 		// Update x axis
 		this.updateXAxis(dom);
 
-		// Generate line
+		// Remove color legend
+		d3.select("#color-legend")
+		  .style("display", "none");
+
+		// Remove previous lines
+		d3.selectAll(".line")
+			.remove();
+
+		// Generate new line
 		let line = d3.line()
 		    		.x(d => this.xScale(d.peak_date))
 		    		.y(d => this.yScale(d.view_count))
 		    		.curve(d3.curveMonotoneX);
 
-		
-		// Append line to plot 
-		this.focus_area.append("path")
-					    .datum(data)
-					    .attr("class", "line")
-					    .attr("d", line);
+		// Animate addition of new line
+		const path = this.focus_area.append("path")
+					      .attr("d", line(data))
+					      .attr("class", "line");
+
+	    const totalLength = path.node().getTotalLength();
+
+	    path.attr("stroke-dasharray", totalLength + " " + totalLength)
+			.attr("stroke-dashoffset", totalLength)
+			.transition()
+			.duration(1000)
+			.attr("stroke-dashoffset", 0);
+
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
 									 // Bind each svg circle to a 
 									 // unique data element
 									 .data(data, d => d.article_id);
-
 
 		// Update()
 		circles.transition()
@@ -177,8 +193,9 @@ class ScatterPlot {
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOverCircle)					
 			        .on("mouseout", this.onMouseOutCircle)
-			        // Selected article behaviour
-			        .on("click", this.onClickCircle)
+			        // TODO Remove...
+			        // // Selected article behaviour
+			        // .on("click", this.onClickCircle)
   				.transition()
 					.attr("r", 2);
 
@@ -206,113 +223,32 @@ class ScatterPlot {
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
+
+		// TEST highlight rectangle
+
+
+    }
+
+    highlightPartOfAxis(domain, color) {
+
+    	console.log(domain);
+
+	    this.focus_area
+	    	.append("rect")
+	    	.classed("event-highlight", true)
+	    	.attr("x", this.xScale(domain[0]))
+	    	.attr("y", this.xAxisHeight)
+	    	.attr("width", this.xScale(domain[1]) - 
+	    					this.xScale(domain[0]))
+	    	.attr("height", 2)
+	    	.style("fill", color)
+	    	.style("opacity", "0.5");
     }
 
     // --------- On-event callbacks -------//
 
     // Function to be called when user clicks on a circle
     onClickCircle(d) {
-
-    	function clearPlot() {
-
-    		// Delete all circles to prepare for single article view
-			const circles = d3.selectAll("circle");
-			circles.classed("deleted", true);
-
-			circles.transition()
-				   .duration(200)
-				   .style("opacity", "0")
-				   .remove();
-
-		   	// Remove all trailing tooltips
-		   	d3.selectAll(".tooltip")
-	   		  .transition()		
-			  .duration(500)
-			  .style("opacity", 0)
-			  .remove();
-
-		  	// Delete path, if it exists
-		  	d3.selectAll(".line")
-		  		.transition()
-		  		.duration(200)
-		  		.style("opacity", 0)
-		  		.remove();
-    	}
-
-    	function returnToTopArticles() {
-
-    		state = "TopArticles";
-
-			// Show list of top articles
-			d3.select("#list-top-articles")
-			  .transition()
-			  .duration(500)
-			  .style("height", "425px");
-
-		    // Hide article summary
-		  	d3.select("#article-summary")
-	  			.html("");
-
-		  	this.remove();
-
-		  	// Clear everything from plot
-		  	clearPlot();
-
-		  	// TODO Don't know what I am doing! Maybe remove!
-		  	// brush_area.clearBrush();
-		  	loadTopArticlesView(null, updateTopArticlesView);
-		}
-
-		function showArticleSummary(d) {
-
-			// Hide list of top articles
-			d3.select("#list-top-articles")
-			  .transition()
-			  .duration(500)
-			  .style("height", "0px");
-
-			// Append close button
-			const close_button = d3.select("#article-summary")
-								  	.append("div")
-								  	.style("word_wrap", "normal")
-								  	.style("width", "100%")
-								  	.append("button")
-							          	.attr("type", "button")
-							          	.classed("btn", true)
-							          	.classed("btn-light", true)
-							          	.on("click", returnToTopArticles)
-						          	.append("i")
-						          		.classed("fas fa-chevron-left", true);
-
-	  		close_button.text(" Back to top articles");
-
-	    	// Show article summary
-	    	const sum = d3.select("#article-summary")
-	    	sum.append("br");
-			sum.append("div")
-				.style("font-size", "18px")
-				.append("u")
-				.text(cleanArticleName(d.article_name));
-			
-			sum.append("div")
-				//TODO Bring back
-				// .text(d.article_summary);
-				// TODO Remove
-				.text("Lorem ipsum dolor sit amet, consectetur adipiscing" +
-					  " elit, sed do eiusmod tempor incididunt ut labore" + 
-					  " et dolore magna aliqua. Ut enim ad minim veniam," + 
-					  " quis nostrud exercitation ullamco laboris nisi ut" + 
-					  " aliquip ex ea commodo consequat. Duis aute irure" + 
-					  " dolor in reprehenderit in voluptate velit esse " +
-					  "cillum dolore eu fugiat nulla pariatur. ")
-				.append("a")
-				.attr("target", "_blank")
-				.attr("href", "https://en.wikipedia.org/wiki/" + 
-								d.article_name)
-				.text("(View more)");
-		}
-
-		showArticleSummary(d);
 
     	// Deselect other articles
     	const circles_clicked = d3.selectAll(".article-clicked")
@@ -328,11 +264,9 @@ class ScatterPlot {
 				
 		selected_circle.classed("article-clicked", true);
 
-		// Clear everything from plot
-		clearPlot();
-
-	   	// Show single article view
-	    loadArticleProgress(d.article_name);
+		// Prepare and load single article view
+   		// scatterplot.transitionToSingleArticleView(d.article_name);
+   		loadArticleProgress(d.article_name);
     }
 
 	// Function to be called when user hovers over a circle - shows tooltip
@@ -345,10 +279,12 @@ class ScatterPlot {
 			// Highlight selected circle
 			d3.select("#article_" + d.article_id)
 				.transition()
-				.attr("r", 2.7)
+				.duration(100)
+				.attr("r", 3)
 				.style("stroke", "Goldenrod")
 				.style("stroke-width", "0.8");
 
+			// Show tooltip
 			let dateFormat = d3.timeFormat("%d %b %Y");
 			let viewsFormat = d3.format(",");
 
@@ -362,7 +298,7 @@ class ScatterPlot {
 		            .style("opacity", .9);
 
             let str = "Most viewed on: ";
-            if (d.granularity != null)
+            if (state === "SingleArticle")
             	str = "On: ";
 
 	        this.div.html(  "<div><u>" + cleanArticleName(d.article_name) +
@@ -404,7 +340,7 @@ class ScatterPlot {
 		if (circle.classed("article-clicked") != true) {
 
 			let r = 2.5;
-            if (d.granularity != null)
+            if (state === "SingleArticle")
             	r = 2;
 
 			circle.transition()
@@ -419,6 +355,31 @@ class ScatterPlot {
 				.style("opacity", 0)
 				.remove();
     }
+
+
+    onClickArticleSearch(d) {
+
+    	function showErrorMessage() {
+
+			const error_message = d3.select("#article-search-error-message");
+			error_message.transition()
+			  			 .style("height", "initial");
+
+			error_message.transition()
+						 .delay(1000)
+						 .duration(1000)
+			 			 .style("height", "0px");
+    	}
+    	
+		const user_input = d.property("value");
+
+		const article_name = user_input.replace(/ /g, "_")
+  				   					   .replace(/'/g, "\\'");
+
+		loadArticleProgress(article_name, showErrorMessage);
+	}
 }
+
+
 
 

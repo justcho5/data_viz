@@ -1,5 +1,7 @@
 const categories = ["Politics", "Social", "Science", "Sports", "Viral"];
 
+
+// TODO Unify with select_events.js and load_events.js(?)
 class Events {
 
 	constructor(events) {
@@ -8,6 +10,7 @@ class Events {
 		this.updateEvents();
 	}
 
+	// TODO Remove?
 	updateEvents(timePeriod) {
 
 		// Update data if needed
@@ -44,9 +47,9 @@ class Events {
 					.attr("type", "checkbox")
 					.attr("id", d => "event" + d.event_id)
 					.attr("onclick", 
-						d => 'select_event(' + d.event_id + ',"' 
-												+ d.event_name + '")');
-
+						d => "select_event('" + d.event_id + "', '" 
+											 + d.event_name + "', '"
+											 + d.event_date + "')");
 
 			li_enter.append("label")
 					.attr("for", d => "event" + d.event_id)
