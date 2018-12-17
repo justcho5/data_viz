@@ -29,7 +29,8 @@
 
 	<!-- JS scripts -->
 	<script type="text/javascript" src="./assets/js/load_json.js"></script>
-	<script type="text/javascript" src="./assets/js/clean_article_name.js"></script>
+	<script type="text/javascript" src="./assets/js/format_article_name.js"></script>
+	<script type="text/javascript" src="./assets/js/color_cycle.js"></script>
 	<script type="text/javascript" src="./assets/js/init_viz.js"></script>
 	<script type="text/javascript" src="./assets/js/scatterplot.js"></script>
 	<script type="text/javascript" src="./assets/js/brush_area.js"></script>
@@ -41,8 +42,8 @@
 	<script type="text/javascript" src="./assets/js/toggle_left_panel.js"></script>
 	<script type="text/javascript" src="./assets/js/article_list.js"></script>
 
-	<div class="top">
-		<p style="padding-top:25%; text-align:center;"> 
+	<div id="intro-page" class="top">
+		<p> 
 			This is a data viz. 
 		</p>
 	</div>
@@ -50,7 +51,7 @@
 	<div class="bottom">
 	<div id="level-1-container" class="container-fluid">
 
-		<div id ="inter-row" class="row no-gutters full-height full-width">
+		<div id ="inter-row" class="row no-gutters full-height">
 
 		<div id="page-title" class="row no-gutters full-width">
 			<div class="col-sm-12">
@@ -76,7 +77,7 @@
 				<div id="left-panel">
 
 				  <!-- Overlay content -->
-				  <div id="left-panel-content">
+				  <div id="left-panel-content" class="full-height">
 
 			    	<!-- Article search -->
 			    	<ul id="article-search" class="list-group">
@@ -108,7 +109,7 @@
 
 						<!-- Event selection -->
 						<div id="event-filter-title" class="list-group-item">
-						 	<h6> Select Events <br> (max. 4) </h6>
+						 	<h6> Select Event <br> (max. 1) </h6>
 						</div>
 
 			      <div id="selected-events-jumb"></div>

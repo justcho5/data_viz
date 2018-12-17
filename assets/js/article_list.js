@@ -43,13 +43,19 @@ class ArticleList {
 
 	onMouseOver(d) {
 
-		// Highlight selected circle
-		d3.select("#article_" + d.article_id)
-			.transition()
-			.duration(10)
-			.attr("r", 3)
-			.style("stroke", "Goldenrod")
-			.style("stroke-width", "0.8");
+		const circle = d3.select("#article_" + d.article_id);
+
+		// If the circle has not already been deleted or is due for deletion,
+		// highlight it.
+		if ((!circle.empty()) && (circle.classed("deleted") == false)) {
+
+			// Highlight selected circle
+			circle.transition()
+				  .duration(10)
+				  .attr("r", 3)
+				  .style("stroke", "Goldenrod")
+				  .style("stroke-width", "0.8");
+		}
 	}
 
 	onMouseOut(d) {

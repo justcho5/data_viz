@@ -97,6 +97,9 @@ class ScatterPlot {
 		// Update x axis
 		this.updateXAxis(dom);
 
+		// Update highlighted events
+		this.updateHighlightedEvents();
+
 		// Add color legend back, in case it has been removed
 		d3.select("#color-legend")
 		  .style("display", "initial");
@@ -136,11 +139,13 @@ class ScatterPlot {
 				.remove();
 	}
 
-
 	updateSingleArticlePlot(dom, data) {
 
 		// Update x axis
 		this.updateXAxis(dom);
+
+		// Update highlighted events
+		this.updateHighlightedEvents();
 
 		// Remove color legend
 		d3.select("#color-legend")
@@ -193,9 +198,6 @@ class ScatterPlot {
 					// Tooltip behaviour
 					.on("mouseover", this.onMouseOverCircle)					
 			        .on("mouseout", this.onMouseOutCircle)
-			        // TODO Remove...
-			        // // Selected article behaviour
-			        // .on("click", this.onClickCircle)
   				.transition()
 					.attr("r", 2);
 
@@ -218,31 +220,60 @@ class ScatterPlot {
 		domain[1] = new Date(dom[1]);
 		domain[1].setDate(domain[1].getDate() + 1);
 
+		// Seselect selected events that don't fall inside the selected 
+		// domain.
+		selected_events_list.forEach(
+			function (e) {
+				if (e.domain[0] < domain[0] ||
+	  			 		e.domain[1] > domain[1]) {
+
+					deselectEvent(e.event_id);
+				}
+			})
+
 		// Update xScale domain
 		this.xScale.domain(domain);
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
-
-		// TEST highlight rectangle
-
-
     }
 
-    highlightPartOfAxis(domain, color) {
 
-    	console.log(domain);
+    updateHighlightedEvents() {
 
-	    this.focus_area
-	    	.append("rect")
-	    	.classed("event-highlight", true)
-	    	.attr("x", this.xScale(domain[0]))
-	    	.attr("y", this.xAxisHeight)
-	    	.attr("width", this.xScale(domain[1]) - 
-	    					this.xScale(domain[0]))
-	    	.attr("height", 2)
-	    	.style("fill", color)
-	    	.style("opacity", "0.5");
+    	const highlighted_areas = this.focus_area
+						    	.selectAll(".event-highlight")
+						    	.data(selected_events_list, d => d.event_id);
+
+    	// Update()
+    	highlighted_areas.transition()
+    					 .duration(500)
+						 .attr("x", d => this.xScale(d.domain[0]))
+    					 .attr("width", d => this.xScale(d.domain[1]) - 
+				    						 this.xScale(d.domain[0]));
+
+    	// Enter()
+		highlighted_areas.enter()    	
+				    	 .append("rect")
+				    	 .classed("event-highlight", true)
+				    	 .attr("id", d => "highlight_" + d.event_id)
+				    	 .attr("x", d => this.xScale(d.domain[0]))
+				    	 .attr("y", this.xAxisHeight - 2)
+				    	 .attr("width", d => this.xScale(d.domain[1]) - 
+				    						 this.xScale(d.domain[0]))
+				    	 .attr("height", 5)
+				    	 .style("fill", d => d.color)
+				    	 .style("opacity", "0")
+				    	 .transition()
+				    	 .duration(500)
+				    	 .style("opacity", "0.7");
+
+		// Exit()
+		highlighted_areas.exit()
+						 .transition()
+						 .duration(500)
+						 .style("opacity", "0")
+						 .remove();
     }
 
     // --------- On-event callbacks -------//

@@ -5,10 +5,6 @@ function loadArticleProgress(article_name, callback) {
 	if (article_name != null)
 		loadArticleProgress.article_name = article_name;
 
-	// TODO Normally should be removed...
-	// // Set state to single article view
-	// state = "SingleArticle";
-
 	const daily_views_url = "https://wikimedia.org/api/rest_v1/metrics/pageviews/" + 
 							"per-article/en.wikipedia.org/all-access/user/";
 
@@ -25,50 +21,30 @@ function loadArticleProgress(article_name, callback) {
 	if (domain == null)
 		domain = initial_dates;
 
-	// If the selected domain is 2 months or smaller, we load the daily
-	// page counts, otherwise, the monthly ones.
-	let url;
-	let granularity;
-	// if ((monthFormat(domain[1]) - monthFormat(domain[0]) < 1) &&
-	// 	(yearFormat(domain[1]) - yearFormat(domain[0]) < 1)) {
+	// Set end date to the last day of next month of domain[1], so that we 
+	// also get the  view count at the end of domain[1]'s month.
+	const end_date = new Date(yearFormat(domain[1]))
+						.setMonth(domain[1].getMonth() + 2, 0);
 
-	// 	console.log("daily gran");
-	// 	granularity = "/daily/";
-	// } else {
-		console.log("monthly gran");
-		granularity = "/monthly/";
-
-		console.log("domain: " + domain);
-		console.log("new end: " + new Date(yearFormat(domain[1]), 
-											monthFormat(domain[1] + 1)));
-	// }
-
-	url = daily_views_url + loadArticleProgress.article_name
-								  	.replace(/\\/g, "")
-								  	.replace(/[!'()*]/g, escape)					
-				 	  		  + granularity
-					 		  + yearFormat(domain[0])
-					 		  + monthFormat(domain[0])
-					 		  + dayFormat(domain[0]) + "/"
-					 		  + yearFormat(domain[1])
-					 		  + monthFormat(domain[1])
-					 		  + dayFormat(domain[1]);
-	
-  	console.log("url: " + url);
+	const url = daily_views_url + makeURIEncoded(loadArticleProgress.article_name)					
+			 	  		  + "/monthly/"
+				 		  + yearFormat(domain[0])
+				 		  + monthFormat(domain[0])
+				 		  + dayFormat(domain[0]) + "/"
+				 		  + yearFormat(end_date)
+				 		  + monthFormat(end_date)
+				 		  + dayFormat(end_date);
+				 		  
 
 	loadJSON(url, function(data) {
-
-		console.log(data);
 
 		// Set state to single article view
 		state = "SingleArticle";
 
 		// Do transition actions, only if a new article name is
-		// given, 
-		if (article_name != null) {
-			console.log("Bika edw");
+		// given.
+		if (article_name != null)
 			initSingleArticleView(article_name);
-		}
 		
 		updateSingleArticleView(domain, data);
 	}, callback);
@@ -84,8 +60,9 @@ function initSingleArticleView(article_name, callback) {
 
 		circles.transition()
 			   .duration(200)
-			   .style("opacity", "0")
-			   .remove();
+			   .style("opacity", "0");
+
+		circles.remove();
 
 	   	// Remove all trailing tooltips
 	   	d3.selectAll(".tooltip")
@@ -133,7 +110,6 @@ function initSingleArticleView(article_name, callback) {
 		  .duration(500)
 		  .style("height", "0px");
 
-		// TODO Check if this works as it should!! 
 	  	// Hide article summary
 	  	d3.select("#article-summary")
   			.html("");
@@ -175,16 +151,15 @@ function initSingleArticleView(article_name, callback) {
 			.append("a")
 			.attr("target", "_blank")
 			.attr("href", "https://en.wikipedia.org/wiki/" + 
-							article_name)
+							makeURIEncoded(article_name))
 			.text("(View more)");
 	}
 
 	// Show article summary
 	showArticleSummary(article_name);
+
 	// Clear everything from plot
 	clearPlot();
-	// Show single article view
-    // loadArticleProgress(article_name, callback);
 }
 
 

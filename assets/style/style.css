@@ -54,6 +54,12 @@ body {
 	hyphens: auto;
 }
 
+#intro-page {
+
+	padding-top: 25%; 
+	text-align: center;
+}
+
 #page-title {
 
 	background-color: silver;
@@ -195,7 +201,8 @@ input checkbox {
 
 .accordion {
 
-	overflow-y: autp;
+	height: 100%;
+	overflow-y: auto;
 }
 
 .card-body .scrollable {
@@ -307,24 +314,6 @@ circle {
 	stroke-width: 0.2;
 	cursor: pointer;
 }
-
-/*circle:not(.article-selected) {
-	
-	opacity: 0.3;
-}
-
-.article-selected {
-
-	opacity: 2.0;
-}*/
-
-
-/*TODO Remove*/
-/*.zoom {
-
-	cursor: move;
-	pointer-events: all;
-}*/
 
 div.tooltip {
 

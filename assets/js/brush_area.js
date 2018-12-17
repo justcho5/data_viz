@@ -38,6 +38,8 @@ class BrushArea {
 			    .call(brush);
 	}
 
+	// Rounds brush selection to the first day of the first selected month
+	// and the last day of the last selected month.
 	refineBrushSelection(brush) {
 
 		let d0 = d3.event.selection.map(this.xBrushScale.invert),
@@ -74,11 +76,12 @@ class BrushArea {
 
 		// If current domain is null, the whole available period is selected
 		// and we don't need to do anything.
-		if (current_domain != null) {
+		// if (current_domain != null) {
 
-			let dom = []
-			dom[0] = Math.min(domain[0], current_domain[0]);
-			dom[1] = Math.max(domain[1], current_domain[1]);
+			// let dom = []
+			let dom = domain;
+			// dom[0] = Math.min(domain[0], current_domain[0]);
+			// dom[1] = Math.max(domain[1], current_domain[1]);
 
 	 		// Update value of stored brush selection
 		    this.brush_selection = dom;
@@ -92,7 +95,7 @@ class BrushArea {
 	 		  .transition()
 	 		  .call(brush.move, [this.xBrushScale(dom[0]), 
 	 		  					 this.xBrushScale(dom[1])]);
-		}
+		// }
 	}
 
 	getBrushSelection() {

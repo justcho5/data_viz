@@ -18,6 +18,9 @@ d3.dsv(",", "https://raw.githubusercontent.com/justcho5/data_viz/" +
 .then (
 	function(event_data) {		
 
+		// Filter out events that fall outside the initial dates.
+		event_data = event_data.filter(d => 
+							new Date(d.event_date) >= initial_dates[0]);
 		events = new Events(event_data);
 	});
 

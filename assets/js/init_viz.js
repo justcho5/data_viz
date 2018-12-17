@@ -13,3 +13,4 @@ let article_list;
 // Possible values: ["TopArticles", "SingleArticle", "Neighbours"(?)]
 let state = "TopArticles";
 let ignore_event = false;
+let selected_events_list = [];
