@@ -8,24 +8,23 @@ function loadArticleNeighbours(article_name, callback) {
 	const url = article_neighbours_url + article_name;
 	 
   	// TODO Bring back 
-	// loadJSON(url, function(nodes) {
+	// loadJSON(url, function(neighbours) {
 
 		// TODO Remove
-		nodes =  [{'node': 'Pope_Francis'},
-				 {'node': 'Kim_Kardashian'},
-				 {'node': 'Adolf_Hitler'},
-				 {'node': 'World_War_I'},
-				 {'node': 'Pokemon_Go'},
-				 {'node': 'Emilia_Clarke'}
-				];
+		neighbours =  [{'node': 'Pope_Francis'},
+		  			   {'node': 'Kim_Kardashian'},
+				  	   {'node': 'Adolf_Hitler'},
+				  	   {'node': 'World_War_I'},
+				  	   {'node': 'Pokemon_Go'},
+				  	   {'node': 'Emilia_Clarke'}
+				 	  ];
 
 		// For each neighbour of the selected article, create a link
 		const links = [];
-		const selected_circle = d3.select("#article_" + convertToID(article_name));
+		const selected_circle = d3.select("#article_" + 
+												convertToID(article_name));
 
-		console.log(selected_circle.data());
-
-		nodes.forEach(function(n) {
+		neighbours.forEach(function(n) {
 
 			const neighbour = d3.select("#article_" + convertToID(n.node));
 
@@ -38,23 +37,51 @@ function loadArticleNeighbours(article_name, callback) {
 			}
 		});
 
-		console.log(links);
-
-		// Append selected article to nodes
-		nodes.push({'node': convertToID(article_name)});
-
+		// If the selected node has no neighbours in this view,
+		// show shaking animation.
+		if (links.length == 0)
+			shakeSelectedCircle();
 
 		// TODO Possibly not needed
 		// Set state to single article view
 		// state = "ArticleNeighbours";
 		
-		updateArticleNeighboursView(nodes, links);
+		updateArticleNeighboursView(links);
 
 	// TODO Bring back
 	// }, callback);
+
+
+	function shakeSelectedCircle() {
+
+		const dur = 60;
+			const offset = 0.5;
+			const cx = selected_circle.attr("cx");
+			selected_circle.transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx) + offset)
+				           .transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx) - offset)
+				           .transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx) + offset)
+				           .transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx) - offset)
+				           .transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx) + offset)
+				           .transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx) - offset)
+				           .transition()
+				           .duration(dur)
+				           .attr("cx", parseInt(cx));
+	}
 }
 
-function updateArticleNeighboursView(nodes, links) {
+function updateArticleNeighboursView(links) {
 
-	scatterplot.updateArticleNeighboursPlot(nodes, links);
+	scatterplot.updateArticleNeighboursPlot(links);
 }

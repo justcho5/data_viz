@@ -225,7 +225,7 @@ class ScatterPlot {
 				.remove();
     }
 
-    updateArticleNeighboursPlot(nodes, links) {
+    updateArticleNeighboursPlot(links) {
 
 		// Generate links
 		const line = d3.line()
