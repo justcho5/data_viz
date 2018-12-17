@@ -5,6 +5,7 @@ class ScatterPlot {
 		
 		// Ranges & Scales
 		const yRange = [0, (d3.max(data, d => d.view_count)) + 100000];
+		this.yRange = yRange; //Save initial yRange
 
 		this.xScale = d3.scaleTime()
 							.domain(xRange)
@@ -97,6 +98,8 @@ class ScatterPlot {
 		// Update x axis
 		this.updateXAxis(dom);
 
+		// Note: In the top articles view, the y axis is kept fixed.
+
 		// Update highlighted events
 		this.updateHighlightedEvents();
 
@@ -143,6 +146,9 @@ class ScatterPlot {
 
 		// Update x axis
 		this.updateXAxis(dom);
+
+		// Update y axis
+		this.updateYAxis(data);
 
 		// Update highlighted events
 		this.updateHighlightedEvents();
@@ -236,6 +242,34 @@ class ScatterPlot {
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
+    }
+
+    resetYAxis() {
+
+    	// Update yScale domain
+    	this.yScale.domain(this.yRange);
+    	// Update y axis
+		this.focus_area.select(".axis.axis-y").call(this.yAxis);
+    }
+
+    updateYAxis(data) {
+
+    	let max_value = d3.max(data, d => d.view_count);
+
+    	if (max_value > 1000000)
+    		max_value += 100000
+    	else if (max_value > 100000)
+    		max_value += 10000
+    	else
+    		max_value += 1000
+
+    	const domain = [0, max_value];
+
+		// Update yScale domain
+		this.yScale.domain(domain);
+
+		// Update y axis
+		this.focus_area.select(".axis.axis-y").call(this.yAxis);
     }
 
 

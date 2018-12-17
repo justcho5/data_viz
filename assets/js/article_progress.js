@@ -83,6 +83,9 @@ function initSingleArticleView(article_name, callback) {
 
 		state = "TopArticles";
 
+		// Reset Y axis, to initial values.
+		scatterplot.resetYAxis();
+
 		// Show list of top articles
 		d3.select("#list-top-articles")
 		  .transition()

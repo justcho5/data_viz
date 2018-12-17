@@ -1,6 +1,5 @@
 const categories = ["Politics", "Social", "Science", "Sports", "Viral"];
 
-
 // TODO Unify with select_events.js and load_events.js(?)
 class Events {
 
