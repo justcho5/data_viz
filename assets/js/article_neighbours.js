@@ -37,6 +37,10 @@ function loadArticleNeighbours(article_name, callback) {
 			}
 		});
 
+		// Update neighbour names to ids
+		neighbours.forEach(n => n.node = convertToID(n.node))
+		neighbours.push({'node': convertToID(article_name)});
+
 		// If the selected node has no neighbours in this view,
 		// show shaking animation.
 		if (links.length == 0)
@@ -46,7 +50,7 @@ function loadArticleNeighbours(article_name, callback) {
 		// Set state to single article view
 		// state = "ArticleNeighbours";
 		
-		updateArticleNeighboursView(links);
+		updateArticleNeighboursView(neighbours, links);
 
 	// TODO Bring back
 	// }, callback);
@@ -55,33 +59,33 @@ function loadArticleNeighbours(article_name, callback) {
 	function shakeSelectedCircle() {
 
 		const dur = 60;
-			const offset = 0.5;
-			const cx = selected_circle.attr("cx");
-			selected_circle.transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx) + offset)
-				           .transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx) - offset)
-				           .transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx) + offset)
-				           .transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx) - offset)
-				           .transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx) + offset)
-				           .transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx) - offset)
-				           .transition()
-				           .duration(dur)
-				           .attr("cx", parseInt(cx));
+		const offset = 0.5;
+		const cx = selected_circle.attr("cx");
+		selected_circle.transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx) + offset)
+			           .transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx) - offset)
+			           .transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx) + offset)
+			           .transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx) - offset)
+			           .transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx) + offset)
+			           .transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx) - offset)
+			           .transition()
+			           .duration(dur)
+			           .attr("cx", parseInt(cx));
 	}
 }
 
-function updateArticleNeighboursView(links) {
+function updateArticleNeighboursView(nodes, links) {
 
-	scatterplot.updateArticleNeighboursPlot(links);
+	scatterplot.updateArticleNeighboursPlot(nodes, links);
 }

@@ -115,10 +115,18 @@ class ScatterPlot {
 		d3.select("#color-legend")
 		  .style("display", "initial");
 
+	  	// Deselect selected circles
+		const circles_clicked = d3.selectAll(".article-clicked");
+
+		circles_clicked.attr("r", 2.5)
+					   .style("stroke", "#484747")
+					   .style("stroke-width", "0.2");
+
+    	circles_clicked.classed("article-clicked", false);
+
+
 		// Update circles
 		let circles = this.circles_area.selectAll("circle")
-						// TODO Remove
-						// this.focus_area.selectAll("circle")
 										// Bind each svg circle to a 
 										// unique data element
 										.data(data, d => d.article_id);
@@ -142,7 +150,7 @@ class ScatterPlot {
 			        .on("mouseout", this.onMouseOutCircle)
 			        // Selected article behaviour
 			        .on("click", this.onClickCircle)
-			        .on("contextmenu", this.onDoubleClickCircle)
+			        .on("contextmenu", this.onRightClickCircle)
   				.transition()
 					.attr("r", 2.5);
 		
@@ -225,7 +233,20 @@ class ScatterPlot {
 				.remove();
     }
 
-    updateArticleNeighboursPlot(links) {
+    updateArticleNeighboursPlot(nodes, links) {
+
+    	// Highlight selected article and neighbours
+    	nodes.forEach(function(n) {
+
+    		const c = d3.select("#article_" + n.node)
+    					.classed("article-clicked", true);
+
+			c.transition()
+  			 .attr("r", 2.7)
+			 .style("stroke", "Goldenrod")
+			 .style("stroke-width", "0.8");
+
+    	})
 
 		// Generate links
 		const line = d3.line()
@@ -264,7 +285,7 @@ class ScatterPlot {
 		domain[1] = new Date(dom[1]);
 		domain[1].setDate(domain[1].getDate() + 1);
 
-		// Seselect selected events that don't fall inside the selected 
+		// Deselect selected events that don't fall inside the selected 
 		// domain.
 		selected_events_list.forEach(
 			function (e) {
@@ -281,7 +302,7 @@ class ScatterPlot {
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
 
-		// Hiding any trailing links between circles
+		// Hide any trailing links between circles
 		d3.selectAll(".link")
 	   	  .transition()
 	   	  .style("stroke-opacity", "0")
@@ -342,6 +363,7 @@ class ScatterPlot {
 				    	 .attr("height", 5)
 				    	 .style("fill", d => d.color)
 				    	 .style("opacity", "0")
+				    	 .on("click", events.showEventDomain)
 				    	 .transition()
 				    	 .duration(500)
 				    	 .style("opacity", "0.7");
@@ -380,8 +402,8 @@ class ScatterPlot {
 
 
     // Function to be called when user clicks on a circle
-    onDoubleClickCircle(d) {
-
+    onRightClickCircle(d) {
+				
     	loadArticleNeighbours(d.article_name);
     }
 

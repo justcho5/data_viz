@@ -85,6 +85,11 @@ function loadTopArticlesView(domain, callback) {
 		// TODO Remove
 		data.forEach(d => d["peak_date"] = createRandomDate(domain));
 
+
+		// Convert peak date string to a date
+		// data.forEach(d => d["peak_date"] = new Date(d["peak_date"]));
+
+
 		callback(domain, data);
 	});
 }
