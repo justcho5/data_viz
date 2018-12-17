@@ -28,6 +28,14 @@ class ScatterPlot {
 					.attr("height", height)
 					.attr("id", "canvas");
 
+		// Create links area before circles area, so that links don't get
+		// drawn above circles.
+		this.links_area = svg.append("g")
+							 .classed("links-area", true);
+
+		this.circles_area = svg.append("g")
+		 						.classed("circles-area", true);
+
 		// Create and append X axis
 		this.xAxisHeight = height - 10;
 		this.xAxis = d3.axisBottom(this.xScale)
@@ -108,7 +116,9 @@ class ScatterPlot {
 		  .style("display", "initial");
 
 		// Update circles
-		let circles = this.focus_area.selectAll("circle")
+		let circles = this.circles_area.selectAll("circle")
+						// TODO Remove
+						// this.focus_area.selectAll("circle")
 										// Bind each svg circle to a 
 										// unique data element
 										.data(data, d => d.article_id);
@@ -132,6 +142,7 @@ class ScatterPlot {
 			        .on("mouseout", this.onMouseOutCircle)
 			        // Selected article behaviour
 			        .on("click", this.onClickCircle)
+			        .on("contextmenu", this.onDoubleClickCircle)
   				.transition()
 					.attr("r", 2.5);
 		
@@ -169,8 +180,8 @@ class ScatterPlot {
 
 		// Animate addition of new line
 		const path = this.focus_area.append("path")
-					      .attr("d", line(data))
-					      .attr("class", "line");
+					      			.attr("d", line(data))
+					      			.attr("class", "line");
 
 	    const totalLength = path.node().getTotalLength();
 
@@ -214,6 +225,33 @@ class ScatterPlot {
 				.remove();
     }
 
+    updateArticleNeighboursPlot(nodes, links) {
+
+		// Generate links
+		const line = d3.line()
+	    				.x(d => this.xScale(d.peak_date))
+		    			.y(d => this.yScale(d.view_count));
+
+		// Animate addition of new links
+		const path = this.links_area
+						 .append("path")
+						 .attr("d", line(links))
+						 .classed("link", true)
+						 .attr("id", (d, i) => "link_" + i)
+					  	 .attr("stroke", "Goldenrod")
+				      	 .attr("stroke-opacity", 0.6)
+				      	 .attr("stroke-width", 1);
+
+	 	const totalLength = path.node().getTotalLength();
+
+	    path.attr("stroke-dasharray", totalLength + " " + totalLength)
+			.attr("stroke-dashoffset", totalLength)
+			.transition()
+			.duration(1000)
+			.attr("stroke-dashoffset", 0);
+    }
+
+
     updateXAxis(dom) {
 
     	// Expand plot domain by 2 days, so that circles  //TODO Remove?
@@ -233,7 +271,7 @@ class ScatterPlot {
 				if (e.domain[0] < domain[0] ||
 	  			 		e.domain[1] > domain[1]) {
 
-					deselectEvent(e.event_id);
+					events.deselectEvent(e.event_id);
 				}
 			})
 
@@ -242,6 +280,12 @@ class ScatterPlot {
 
 		// Update x axis
 		this.focus_area.select(".axis.axis-x").call(this.xAxis);
+
+		// Hiding any trailing links between circles
+		d3.selectAll(".link")
+	   	  .transition()
+	   	  .style("stroke-opacity", "0")
+	   	  .remove();
     }
 
     resetYAxis() {
@@ -282,7 +326,7 @@ class ScatterPlot {
     	// Update()
     	highlighted_areas.transition()
     					 .duration(500)
-						 .attr("x", d => this.xScale(d.domain[0]))
+    					 .attr("x", d => this.xScale(d.domain[0]))
     					 .attr("width", d => this.xScale(d.domain[1]) - 
 				    						 this.xScale(d.domain[0]));
 
@@ -332,6 +376,13 @@ class ScatterPlot {
 		// Prepare and load single article view
    		// scatterplot.transitionToSingleArticleView(d.article_name);
    		loadArticleProgress(d.article_name);
+    }
+
+
+    // Function to be called when user clicks on a circle
+    onDoubleClickCircle(d) {
+
+    	loadArticleNeighbours(d.article_name);
     }
 
 	// Function to be called when user hovers over a circle - shows tooltip

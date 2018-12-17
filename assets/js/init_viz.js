@@ -8,9 +8,10 @@ let scatterplot;
 let brush_area;
 let brush;
 let article_list;
+let events;
 
 // State
-// Possible values: ["TopArticles", "SingleArticle", "Neighbours"(?)]
+// Possible values: ["TopArticles", "SingleArticle", "ArticleNeighbours"]
 let state = "TopArticles";
 let ignore_event = false;
 let selected_events_list = [];
