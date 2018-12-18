@@ -12,6 +12,17 @@ function whenDocumentLoaded(action) {
 
 whenDocumentLoaded(() => {
 
+	// Set event listener for search bar
+	const search_bar = document.getElementById("article-search-bar");
+	search_bar.addEventListener("keyup", function(event) {
+
+		// On keyboard enter
+	  	if (event.keyCode === 13) {
+		    // Click the same function as when the search button is pressed.
+	    	scatterplot.onClickArticleSearch(d3.select("#article-search-bar"));
+	  	}
+	});
+
 	loadTopArticlesView(initial_dates, initTopArticlesView);
 });
 
@@ -85,10 +96,9 @@ function loadTopArticlesView(domain, callback) {
 		// TODO Remove
 		data.forEach(d => d["peak_date"] = createRandomDate(domain));
 
-
+		// TODO Bring back
 		// Convert peak date string to a date
 		// data.forEach(d => d["peak_date"] = new Date(d["peak_date"]));
-
 
 		callback(domain, data);
 	});
