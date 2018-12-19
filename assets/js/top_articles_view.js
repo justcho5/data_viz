@@ -122,7 +122,7 @@ function initTopArticlesView(domain, data) {
 	scatterplot.updateTopArticlesPlot(domain, data);
 
 	// Brush area creation
-	const brushHeight = 20;
+	const brushHeight = 10;
 	brush = d3.brushX()
         	  .extent([[0, 0], [width, brushHeight]])
               .on("end", brush_end);
