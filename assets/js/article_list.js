@@ -49,22 +49,33 @@ class ArticleList {
 		// highlight it.
 		if ((!circle.empty()) && (circle.classed("deleted") == false)) {
 
+			// TODO Remove?
 			// Highlight selected circle
-			circle.transition()
-				  .duration(10)
-				  .attr("r", circle_radius + 0.2)
-				  .style("stroke", "Goldenrod")
-				  .style("stroke-width", "0.8");
+			// circle.transition()
+			// 	  .duration(10)
+			// 	  .attr("r", circle_radius + 0.2)
+			// 	  .style("stroke", "Goldenrod")
+			// 	  .style("stroke-width", "0.8");
+
+			// Highlight circle and show scatterplot, like when the user
+			// hovers over a circle.
+			circle.dispatch("mouseover");
 		}
 	}
 
 	onMouseOut(d) {
 
+		// TODO Remove?
     	// Bring selected circle to its initial form
-    	d3.select("#article_" + d.article_id)
-			.transition()
-			.attr("r", circle_radius)
-			.style("stroke", "#484747")
-			.style("stroke-width", "0.2");
+   //  	d3.select("#article_" + d.article_id)
+			// .transition()
+			// .attr("r", circle_radius)
+			// .style("stroke", "#484747")
+			// .style("stroke-width", "0.2");
+
+		// Bring selected circle to its initial form, like when the user
+		// hovers out of a circle.
+		const circle = d3.select("#article_" + d.article_id);
+		circle.dispatch("mouseout");
 	}
 }
