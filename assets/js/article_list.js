@@ -52,7 +52,7 @@ class ArticleList {
 			// Highlight selected circle
 			circle.transition()
 				  .duration(10)
-				  .attr("r", 3)
+				  .attr("r", circle_radius + 0.2)
 				  .style("stroke", "Goldenrod")
 				  .style("stroke-width", "0.8");
 		}
@@ -63,7 +63,7 @@ class ArticleList {
     	// Bring selected circle to its initial form
     	d3.select("#article_" + d.article_id)
 			.transition()
-			.attr("r", 2.5)
+			.attr("r", circle_radius)
 			.style("stroke", "#484747")
 			.style("stroke-width", "0.2");
 	}

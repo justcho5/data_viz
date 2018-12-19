@@ -4,6 +4,21 @@ let tour = {
     steps: [
         {
             target: "scatterplot",
+            title: "Start tour",
+            placement: "right",
+            width: 200,
+            xOffset: -30,
+            showNextButton: true,
+            onNext: function() {
+
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
+            }
+        },
+        {
+            target: "scatterplot",
             title: "Top 50 articles",
             content: "In this view, you can see the top 50 most viewed " + 
                      " Wikipedia articles for 2017-2018.",
@@ -12,6 +27,11 @@ let tour = {
             xOffset: -30,
             showNextButton: true,
             onNext: function() {
+
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
 
                 const domain = [];
                 domain[0] = new Date(2017, 5, 1);
@@ -31,6 +51,11 @@ let tour = {
             yOffset: 500,
             showNextButton: true,
             onNext: function() {
+
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
 
                 // Open left panel
                 toggleNav();
@@ -57,6 +82,11 @@ let tour = {
             showNextButton: true,
             onNext: function() {
                 
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
+
                 const domain = [];
                 domain[0] = new Date(2014, 0, 1);
                 domain[1] = new Date(2018, 10, 1);
@@ -75,6 +105,11 @@ let tour = {
             showNextButton: true,
             onNext: function() {
 
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
+
                 d3.select("#article_World_War_I")
                     .dispatch("mouseover");
             }
@@ -91,6 +126,11 @@ let tour = {
             showNextButton: true,
             onNext: function() {
 
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
+
                 d3.select("#article_World_War_I")
                   .dispatch("mouseout");
             }
@@ -105,6 +145,11 @@ let tour = {
             yOffset: -25,
             showNextButton: true,
             onNext: function() {
+
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
 
                 d3.select("#article_World_War_I")
                   .dispatch("click");
@@ -133,7 +178,14 @@ let tour = {
                      "by searching on this search bar.",
             placement: "right",
             yOffset: -20,
-            showNextButton: true
+            showNextButton: true,
+            onNext: function() {
+
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
+            }
         },
         {
             target: "article_World_War_I",  //TODO Change appropriately
@@ -146,6 +198,11 @@ let tour = {
             yOffset: -25,
             showNextButton: true,
             onNext: function() {
+
+                // In case the user has gone to single article view,
+                // go back to top articles view.
+                d3.select("#return-top-articles")
+                  .dispatch("click");
 
                 d3.select("#article_World_War_I")
                   .dispatch("contextmenu");
@@ -164,5 +221,6 @@ let tour = {
 
 // Start the tour!
 $(document).ready(function() {
+
     hopscotch.startTour(tour);
 });
