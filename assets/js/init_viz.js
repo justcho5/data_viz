@@ -10,7 +10,7 @@ let scatterplot;   	//Stores instance of scatterplot class
 let brush_area;   	//Stores instance of brush class
 let brush;       	//Stores brush element
 let article_list;   //Stores instance of article list class
-let events;			//Stores instance of event class
+let events;			//Stores instance of events class
 
 // Global vars
 const circle_radius = 2.5;   	//Radius of circle on top articles view
