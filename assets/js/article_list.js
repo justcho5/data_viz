@@ -8,6 +8,11 @@ class ArticleList {
 
 	updateArticleList(data) {
 
+		// Re-sort data in descending view count order
+		data.sort(function (d1, d2) {
+			return d3.descending(d1.view_count, d2.view_count)
+		});
+
 		// Add a <li> element for each article
 		const article_list = d3.select("#" + this.article_list_id)
 							   .select(".scrollable");

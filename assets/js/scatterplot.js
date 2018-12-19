@@ -320,6 +320,13 @@ class ScatterPlot {
 	   	  .transition()
 	   	  .style("stroke-opacity", "0")
 	   	  .remove();
+
+		// Remove all trailing tooltips
+	   	d3.selectAll(".tooltip")
+   		  .transition()		
+		  .duration(500)
+		  .style("opacity", 0)
+		  .remove(); 
     }
 
     resetYAxis() {
