@@ -399,6 +399,7 @@ li.article-li:hover span {
 	/*max-height: 600px;*/
 	word-wrap: normal;
 	overflow-y: auto;
+	color: #1f2833;
 }
 
 #article-summary div {
@@ -408,7 +409,7 @@ li.article-li:hover span {
 
 #article-summary a:link, #article-summary a:visited { 
 
-	color: Goldenrod;
+	color: #45a29e;
 }
 
 /*---------overlay--------*/
