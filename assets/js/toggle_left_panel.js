@@ -19,6 +19,16 @@ function toggleNav() {
 	}
 }
 
+function enterSite(){
+    overlay = d3.select('#first-page');
+    if (overlay.style("visibility")=="hidden"){
+        overlay.style("visibility") = "visible"
+    } else {
+//        alert("hello")
+        overlay.style("visibility", "hidden")
+    }
+}
+
 // Close left panel, when user clicks outside of it
 $(document).mouseup(function(e) {
 

@@ -62,7 +62,8 @@ class ScatterPlot {
 
 		// Color gradient for datapoints based on y scale
 		const grad_scale = [yRange[0], (yRange[0] + yRange[1])/2, yRange[1]]
-		const colors = ["#F36D6C", "#FF9640", "#FEC233","#A5D028","#51C2D0"];
+//		const colors = ["#66FCF1", "#45A29E", "#C5C6C7", "#1F2833", "#0B0C10"];
+		const colors = ["#F36D6C", "#FF9640", "#FEC233","#A5D028","#51C2D0"]
 		this.color_gradient = d3.scaleLinear()
 								.domain(grad_scale)
 								.range([colors[4], colors[2], colors[0]]);

@@ -90,7 +90,7 @@ function initSingleArticleView(article_name, callback) {
 		d3.select("#list-top-articles")
 		  .transition()
 		  .duration(500)
-		  .style("height", "425px");
+		  .style("height", "80vh");
 
 	    // Hide article summary
 	  	d3.select("#article-summary")
@@ -164,6 +164,7 @@ function initSingleArticleView(article_name, callback) {
 
 			 	// Append article summary
 				sum.append("div")
+				    .style('padding', '0 10px')
 					.html(summary_text);
 
 			} else {

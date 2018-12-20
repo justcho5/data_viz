@@ -21,6 +21,9 @@
 	<!-- Style -->
 	<link rel="stylesheet" type="text/css" href="./assets/style/style.css">
 
+<link href="https://fonts.googleapis.com/css?family=Major+Mono+Display" rel="stylesheet">
+
+
 	<title>Exploring human knowledge through Wikipedia usage</title>
 </head>
 <body>
@@ -66,8 +69,26 @@
 
 	<div class="bottom">
 	<div id="level-1-container" class="container-fluid">
+		<div id="first-page" class="row no-gutters full-width">
+			<div class="col-sm-12">
 
+
+
+				<div>
+					<h4 vertical-align="middle", style = "font-weight:bold;">
+						Exploring human knowledge through Wikipedia usage
+					</h4>
+				</div>
+				<div id="overlay-button">
+					<button id="enter-site-button" class="btn" onclick="enterSite()">
+						<span>Enter Site!</span>
+					</button>
+				</div>
+
+			</div>
+		</div>
 		<div id ="inter-row" class="row no-gutters full-height">
+
 
 		<div id="page-title" class="row no-gutters full-width">
 			<div class="col-sm-12">
@@ -79,7 +100,7 @@
 				</div>
 
 				<div>
-					<h4 vertical-align="middle">
+					<h4 vertical-align="middle", style = "font-weight:bold;">
 						Exploring human knowledge through Wikipedia usage
 					</h4>
 				</div>
@@ -245,7 +266,7 @@
 
 					<li id="list-top-articles-title" class="list-group-item">
 				 		<h6> Top Articles 
-				 			<br> (click for article view-count progress)
+				 			<!--<br> (click for article view-count progress)-->
 			 		 	</h6>
 					</li>
 

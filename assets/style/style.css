@@ -9,6 +9,7 @@ html {
 
 body {
 
+
 	background-color: #FBFBFB;
 	height: 100%;
 	width: 100%;
@@ -28,7 +29,6 @@ body {
 }
 
 .bottom {
-    padding: 5px 15px;
 	height: 100%;
 	width: 100%;
 	display: flex;
@@ -61,11 +61,13 @@ body {
 }
 
 #page-title {
+    font-family: 'Major Mono Display', monospace !important;
+
     vertical-align:middle;
     text-align:center;
-	background-color: #4B6679;
+	background-color: #1f2833;;
 	color: #FBFBFB;
-	font-style: italic;
+	font-weight: bold !important;
 	align-items:center;
 	height: 75px;
 }
@@ -73,6 +75,7 @@ body {
 #inter-row {
     background-color: #FBFBFB;
 	overflow-y: hidden;
+	padding: 5px 15px;
 
 }
 
@@ -87,7 +90,7 @@ body {
 /*-----------Left panel--------------*/
 
 #open-left-panel-btn {
-
+    margin-left: 10px;
 	float: left;
 }
 
@@ -138,7 +141,7 @@ font-size, so the contents don't overlap
 }
 
 #article-search-title, #list-top-articles-title {
-
+    color: #FFFFFF;
 	background-color: #262626;
 	border-top: none;
 }
@@ -146,13 +149,16 @@ font-size, so the contents don't overlap
 
 #article-search li, #list-top-articles li {
 
-	color: #e6e6e6;
+	color: #6e6e6e;
 	font-family: "Arial", Times, serif;
 	border-color: #333333;
 	border-left: none;
 	border-right: none;
 	border-width: 1.5px;
 }
+#list-top-articles-title {
+    color: #FFFFFF !important;
+    background-color: #1F2833;}
 
 #article-search-error-message {
 
@@ -350,28 +356,32 @@ div.tooltip > div {
 
 /*------------Right panel---------------*/
 
+#right-panel{
+    margin-top: 20px;}
 
 #list-top-articles li:not(#list-top-articles-title){
 
-	background-color: #404040;
+	background-color: #E0E0E0;
 }
+#list-top-articles li:not(#list-top-articles-title):hover {
+    background-color: #45a29e
+    }
 
 .article-li {
-
 	width: 100%
 }
 
-li.article-li:hover span {
 
-	color: grey;
+li.article-li:hover span {
+	color: #66fcf1;
 	cursor: pointer;
 }
 
 #list-top-articles, #list-top-articles .scrollable {
-
+    color: #6e6e6e
 	width: 100%;
 	/*max-height: 600px;*/
-	height:100vh;
+	height:80vh;
 	overflow-y: auto;
 }
 
@@ -380,12 +390,13 @@ li.article-li:hover span {
 	padding-top: 5%;
 	padding-left: 5%;
 	width: 95%;
-	max-height: 600px;
+	/*max-height: 600px;*/
+	/*height:100vh;*/
 }
 
 #summary-text {
-
-	max-height: 600px;
+    height:80vh;
+	/*max-height: 600px;*/
 	word-wrap: normal;
 	overflow-y: auto;
 }
@@ -399,3 +410,20 @@ li.article-li:hover span {
 
 	color: Goldenrod;
 }
+
+/*---------overlay--------*/
+
+#first-page{
+    position: absolute;
+    z-index: 1;
+    font-family: 'Major Mono Display', monospace !important;
+    vertical-align: middle;
+    text-align: center;
+    background-color: #1f2833;
+    color: #66fcf1;
+    font-weight: bold !important;
+    align-items: center;
+    height: 100vh;
+    opacity: .95;
+    visibility: visibile;
+    }
