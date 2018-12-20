@@ -69,7 +69,7 @@ body {
 	color: #FBFBFB;
 	font-weight: bold !important;
 	align-items:center;
-	height: 75px;
+	height: 8%;
 }
 
 #inter-row {
@@ -357,7 +357,9 @@ div.tooltip > div {
 /*------------Right panel---------------*/
 
 #right-panel{
-    margin-top: 20px;}
+
+    margin-top: 20px;
+}
 
 #list-top-articles li:not(#list-top-articles-title){
 

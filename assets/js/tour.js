@@ -202,6 +202,8 @@ let tour = {
 
 // Start the tour!
 $(document).ready(function() {
+    $("#enter-site-button").on("click", function() {
 
-    hopscotch.startTour(tour);
+        hopscotch.startTour(tour);
+    });
 });
