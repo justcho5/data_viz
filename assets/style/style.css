@@ -192,6 +192,7 @@ input checkbox {
 ::-webkit-scrollbar-thumb {
 
     border-radius: 10px;
+    background-color: darkgrey;
     -webkit-box-shadow: inset 0 0 6px white; 
 }
 
@@ -365,25 +366,30 @@ div.tooltip > div {
 
 	background-color: #E0E0E0;
 }
+
 #list-top-articles li:not(#list-top-articles-title):hover {
+
     background-color: #45a29e
-    }
+}
 
 .article-li {
+
 	width: 100%
 }
 
 
 li.article-li:hover span {
+
 	color: #66fcf1;
 	cursor: pointer;
 }
 
 #list-top-articles, #list-top-articles .scrollable {
+
     color: #6e6e6e
 	width: 100%;
 	/*max-height: 600px;*/
-	height:80vh;
+	height: 80vh;
 	overflow-y: auto;
 }
 
@@ -397,6 +403,7 @@ li.article-li:hover span {
 }
 
 #summary-text {
+
     height:80vh;
 	/*max-height: 600px;*/
 	word-wrap: normal;
@@ -417,6 +424,7 @@ li.article-li:hover span {
 /*---------overlay--------*/
 
 #first-page{
+
     position: absolute;
     z-index: 1;
     font-family: 'Major Mono Display', monospace !important;
@@ -429,4 +437,4 @@ li.article-li:hover span {
     height: 100vh;
     opacity: .95;
     visibility: visibile;
-    }
+}
