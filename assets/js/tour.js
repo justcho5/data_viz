@@ -199,7 +199,7 @@ let tour = {
         }
     ],
 
-    onEnd: function(){
+    onEnd: function () {
         // we set cookie to mark that we finished the tour
         localStorage.setItem("tourFinished", "done");
         console.log("Tour finished: ", document.cookie);
@@ -214,7 +214,7 @@ $(document).ready(function () {
 
         if (tourNotDone) {
             hopscotch.startTour(tour);
-        }else{
+        } else {
             console.log("Skip tour since use did it before.")
         }
     });
