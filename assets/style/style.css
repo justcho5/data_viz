@@ -300,7 +300,7 @@ input checkbox {
 }
 
 .brush .selection{
-    fill: #fff;
+    fill: #000000;
 }
 
 .axis--x line{
