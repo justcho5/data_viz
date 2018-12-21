@@ -11,6 +11,12 @@ function whenDocumentLoaded(action) {
 }
 
 whenDocumentLoaded(() => {
+
+	// Disable context menu appearance, on right click inside scatterplot
+	$('#scatterplot').bind('contextmenu', function(e) {
+        return false;
+    });
+
     console.log($("#scatterplot").height());
 	// Set event listener for search bar
 	const search_bar = document.getElementById("article-search-bar");
