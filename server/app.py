@@ -10,7 +10,7 @@ from flask_cors import CORS
 import wikipedia
 import json
 
-engine = sql.create_engine('sqlite:///database_working_add_052017.db')
+engine = sql.create_engine('sqlite:///kiru_db.db')
 metadata = sql.MetaData()
 articles = sql.Table('articles', metadata,
     sql.Column('title', sql.String),
