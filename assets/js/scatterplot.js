@@ -125,10 +125,6 @@ class ScatterPlot {
             .style("stroke", "#484747")
             .style("stroke-width", "0.2");
 
-        // TODO Remove, if the one bellow is ok
-        circles_clicked.classed("article-clicked", false);
-
-        // TODO Check if ok
         // Remove all classes from circle
         circles_clicked.attr("class", "");
 
@@ -243,12 +239,10 @@ class ScatterPlot {
 
     // Update plot when article neighbours are showing.
     updateArticleNeighboursPlot(nodes, links, article_name) {
-        console.log(nodes)
-        console.log(links)
-        console.log(article_name)
 
         // From: https://stackoverflow.com/a/20114692/5553845
         function generateRandomDarkColor() {
+
             var letters = '0123456789ABCDEF';
             var color = '#';
             // modified from original 16 to 14 to get more darker colors.
@@ -262,11 +256,12 @@ class ScatterPlot {
 
         // Highlight selected circle and neighbours
         nodes.forEach(function (n) {
-            console.log("Node ", n)
+           
             const c = d3.select("#article_" + n)
                 .classed("article-clicked", true)
                 .classed("neighbour-of-" +
-                    convertToID(article_name), true);
+                    convertToID(article_name), true)
+                .attr("data-color", linkColor);
             c.transition()
                 .attr("r", circle_radius + 0.2)
                 .style("stroke", linkColor)
@@ -450,7 +445,8 @@ class ScatterPlot {
                 n.classed("neighbour-of-" + article_id, false);
                 if (!n.attr("class").includes("neighbour-of-")) {
 
-                    n.classed("article-clicked", false);
+                    n.classed("article-clicked", false)
+                     .attr("data-color", "");
                     n.transition()
                         .attr("r", circle_radius)
                         .style("stroke", "#484747")
@@ -575,9 +571,10 @@ class ScatterPlot {
     onMouseOutCircle(d) {
 
         const circle = d3.select("#article_" + d.article_id);
-
-        // Bring selected circle to its initial form
+        
         if (circle.classed("article-clicked") != true) {
+        // If the circle in not selected (left or right clicked) 
+        // we bring it to its initial form
 
             let r = circle_radius;
             if (state === "SingleArticle")
@@ -587,6 +584,17 @@ class ScatterPlot {
                 .attr("r", r)
                 .style("stroke", "#484747")
                 .style("stroke-width", "0.2");
+            
+        } else {
+
+        // If the circle has been right-clicked, we set its color to
+        // the one set when the link between the circle and its 
+        // neighbours was created
+            if (circle.attr("class").includes("neighbour-of-")) {
+
+                circle.transition()
+                      .style("stroke", circle.attr("data-color"));
+            }
         }
 
         // Hide tooltip

@@ -215,7 +215,7 @@ $(document).ready(function () {
         if (tourNotDone) {
             hopscotch.startTour(tour);
         } else {
-            console.log("Skip tour since use did it before.")
+            console.log("Skip tour since user did it before.")
         }
     });
 });
