@@ -7,10 +7,10 @@ You can see our visualization in action, in the following URL: https://ividim.gi
 
 ## File Structure
 
-assets: This folder contains the front-end part of the application.
-data: Contains standalone data files that are used by the app.
-server: Contains the back-end part of the application.
-vendor: Contains external Javascript libraries, used in the front-end part of the app.
+* assets: This folder contains the front-end part of the application.
+* data: Contains standalone data files that are used by the app.
+* server: Contains the back-end part of the application.
+* vendor: Contains external Javascript libraries, used in the front-end part of the app.
 
 ## Authors
 Hyun Jii Cho, Ivi Dimopoulou, Kirusanth Poopalasingam
