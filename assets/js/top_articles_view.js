@@ -11,7 +11,7 @@ function whenDocumentLoaded(action) {
 }
 
 whenDocumentLoaded(() => {
-
+    console.log($("#scatterplot").height());
 	// Set event listener for search bar
 	const search_bar = document.getElementById("article-search-bar");
 	search_bar.addEventListener("keyup", function(event) {
