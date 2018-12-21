@@ -1,3 +1,4 @@
 .idea/**
 server/env/**
 **/.ipynb_checkpoints
+server/wiki-data/
