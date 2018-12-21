@@ -80,14 +80,24 @@ def all_view_count(start_year, start_month,
     return f.jsonify(result)
 
 
-# Create another endpoint for the summary request
 @app.route('/summary/<article_name>')
 def get_summary(article_name):
     result = []
     with engine.connect() as con:
-        rows = con.execute(....))
+        rows = con.execute('''
+            select title, summary
+            from articles
+                where (title) == :an
+            limit 1
+        ''', dict(an=str(article_name)))
 
-        return f.jsonify(result)
+        for r in rows:
+            res = {"article_name": r[0],
+                   "summary": r[1]
+                   }
+            result.append(res)
+            print(res)
+    return f.jsonify(result)
 
 
 @app.route('/links/<article_name>')
