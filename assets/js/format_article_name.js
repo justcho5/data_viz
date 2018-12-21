@@ -6,7 +6,7 @@ function cleanArticleName(article_name) {
 
 function convertToID(article_name) {
 
-    // Replace all non alphanumeric character with an underscore.
+    // Replace all non alphanumeric characters with an underscore.
     return article_name.replace(/\W/g, "_");
 }
 

@@ -78,11 +78,6 @@ function loadTopArticlesView(domain, callback) {
 
             loadJSON(url, function (data) {
 
-                // TODO Remove
-                // Filter out article "-" and "404.php"
-                data = data.filter(d => d.article_name != "-" &&
-                    d.article_name != "404.php");
-
                 // Use each article's name as its id.
                 data.forEach(d => d["article_id"] = convertToID(d["article_name"]));
 
