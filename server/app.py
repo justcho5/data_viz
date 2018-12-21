@@ -98,19 +98,8 @@ def get_summary(article_name):
 
     result=[]
     with engine.connect() as con:
-        rows= con.execute('''
-            select title, summary
-            from articles
-                where (title) == :an
-            limit 1
-        ''', dict(an=str(article_name)))
+        rows = con.execute(....))
 
-        for r in rows:
-            res = {"article_name": r[0],
-                   "summary": r[1]
-                   }
-            result.append(res)
-            print(res)
     return f.jsonify(result)
 #
 #
