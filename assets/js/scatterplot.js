@@ -2,7 +2,7 @@
 class ScatterPlot {
 
 	constructor(svg_element_id, data, width, height, xRange) {
-		
+
 		// Ranges & Scales
 		const yRange = [0, this.calculateDomainUpperBound(
 								d3.max(data, d => d.view_count))];
@@ -45,15 +45,15 @@ class ScatterPlot {
 
 		this.focus_area.append("g")
 					   .classed("axis axis-x", true)
-					   .attr("transform", "translate(0," + 
+					   .attr("transform", "translate(0," +
 					   								this.xAxisHeight + ")")
 	      			   .call(this.xAxis);
 
-		// Create Y axis	
+		// Create Y axis
 		this.yAxis = d3.axisLeft(this.yScale)
 						.tickSize(2)
 						.tickFormat(function (d) {
-					        
+
 					        const prefix = d3.format("~s");
 					        return prefix(d);
 					    })
@@ -135,7 +135,7 @@ class ScatterPlot {
 
 		// Update circles
 		let circles = this.circles_area.selectAll("circle")
-										// Bind each svg circle to a 
+										// Bind each svg circle to a
 										// unique data element
 										.data(data, d => d.article_id);
 
@@ -154,15 +154,15 @@ class ScatterPlot {
 					.attr("cy", d => this.yScale(d.view_count))
 					.attr("fill", d => this.color_gradient(d.view_count))
 					// Tooltip behaviour
-					.on("mouseover", this.onMouseOverCircle)				
+					.on("mouseover", this.onMouseOverCircle)
 			        .on("mouseout", this.onMouseOutCircle)
 			        // Selected article behaviour
 			        .on("click", this.onClickCircle)
 			        .on("contextmenu", this.onRightClickCircle)
   				.transition()
 					.attr("r", circle_radius);
-		
-		// Exit() 
+
+		// Exit()
 		circles.exit()
 				.transition()
 					.attr("r", 0)
@@ -211,7 +211,7 @@ class ScatterPlot {
 
 		// Update circles
 		let circles = this.focus_area.selectAll("circle")
-									 // Bind each svg circle to a 
+									 // Bind each svg circle to a
 									 // unique data element
 									 .data(data, d => d.article_id);
 
@@ -230,12 +230,12 @@ class ScatterPlot {
 					.attr("cy", d => this.yScale(d.view_count))
 					.attr("fill", "#a50f15")
 					// Tooltip behaviour
-					.on("mouseover", this.onMouseOverCircle)					
+					.on("mouseover", this.onMouseOverCircle)
 			        .on("mouseout", this.onMouseOutCircle)
   				.transition()
 					.attr("r", 2);
 
-		// Exit() 
+		// Exit()
 		circles.exit()
 				.transition()
 					.attr("r", 0)
@@ -244,18 +244,33 @@ class ScatterPlot {
 
     // Update plot when article neighbours are showing.
     updateArticleNeighboursPlot(nodes, links, article_name) {
+	    console.log(nodes)
+        console.log(links)
+        console.log(article_name)
+
+        // From: https://stackoverflow.com/a/20114692/5553845
+        function generateRandomDarkColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            // modified from original 16 to 14 to get more darker colors.
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 14)];
+            }
+            return color;
+        }
+
+        let linkColor = generateRandomDarkColor();
 
     	// Highlight selected circle and neighbours
     	nodes.forEach(function(n) {
-
+    	    console.log("Node ", n)
     		const c = d3.select("#article_" + n)
     					.classed("article-clicked", true)
-    					.classed("neighbour-of-" + 
+    					.classed("neighbour-of-" +
 								  convertToID(article_name), true);
-
 			c.transition()
   			 .attr("r", circle_radius + 0.2)
-			 .style("stroke", "Goldenrod")
+			 .style("stroke", linkColor)
 			 .style("stroke-width", "0.8");
 
     	})
@@ -270,10 +285,10 @@ class ScatterPlot {
 						 .append("path")
 						 .attr("d", line(links))
 						 .classed("link", true)
-						 .classed("link-of-" + convertToID(article_name), 
+						 .classed("link-of-" + convertToID(article_name),
 			 					   true)
 						 .attr("id", (d, i) => "link_" + i)
-					  	 .attr("stroke", "Goldenrod")
+					  	 .attr("stroke", (d, i) => linkColor)
 				      	 .attr("stroke-opacity", 0.6)
 				      	 .attr("stroke-width", 1);
 
@@ -292,14 +307,14 @@ class ScatterPlot {
     	// Expand plot domain by 2 days, so that circles  //TODO Remove?
 		// won't fall on the plot's borders
 		let domain = [];
-		
+
 		domain[0] = new Date(dom[0]);
 		domain[0].setDate(domain[0].getDate() - 1);
-		
+
 		domain[1] = new Date(dom[1]);
 		domain[1].setDate(domain[1].getDate() + 1);
 
-		// Deselect selected events that don't fall inside the selected 
+		// Deselect selected events that don't fall inside the selected
 		// domain.
 		selected_events_list.forEach(
 			function (e) {
@@ -324,10 +339,10 @@ class ScatterPlot {
 
 		// Remove all trailing tooltips
 	   	d3.selectAll(".tooltip")
-   		  .transition()		
+   		  .transition()
 		  .duration(500)
 		  .style("opacity", 0)
-		  .remove(); 
+		  .remove();
     }
 
     resetYAxis() {
@@ -337,8 +352,8 @@ class ScatterPlot {
     	// Update y axis
 		this.focus_area.select(".axis.axis-y").call(this.yAxis);
 		// Update color gradient
-		const grad_scale = [this.yRange[0], 
-						   (this.yRange[0] + this.yRange[1])/2, 
+		const grad_scale = [this.yRange[0],
+						   (this.yRange[0] + this.yRange[1])/2,
 						    this.yRange[1]];
 		this.color_gradient.domain(grad_scale);
     }
@@ -369,17 +384,17 @@ class ScatterPlot {
     	highlighted_areas.transition()
     					 .duration(500)
     					 .attr("x", d => this.xScale(d.domain[0]))
-    					 .attr("width", d => this.xScale(d.domain[1]) - 
+    					 .attr("width", d => this.xScale(d.domain[1]) -
 				    						 this.xScale(d.domain[0]));
 
     	// Enter()
-		highlighted_areas.enter()    	
+		highlighted_areas.enter()
 				    	 .append("rect")
 				    	 .classed("event-highlight", true)
 				    	 .attr("id", d => "highlight_" + d.event_id)
 				    	 .attr("x", d => this.xScale(d.domain[0]))
 				    	 .attr("y", this.xAxisHeight - 2)
-				    	 .attr("width", d => this.xScale(d.domain[1]) - 
+				    	 .attr("width", d => this.xScale(d.domain[1]) -
 				    						 this.xScale(d.domain[0]))
 				    	 .attr("height", 5)
 				    	 .style("fill", d => d.color)
@@ -413,7 +428,7 @@ class ScatterPlot {
 				.attr("r", circle_radius + 0.2)
 				.style("stroke", "Goldenrod")
 				.style("stroke-width", "0.8");
-				
+
 		selected_circle.classed("article-clicked", true);
 
 		// Prepare and load single article view
@@ -424,10 +439,10 @@ class ScatterPlot {
 
     // Function to be called when user right clicks on a circle
     onRightClickCircle(d) {
-		
+
     	function removeArticleNeighbours(article_id) {
 
-	    	// Remove highlight of selected article and neighbours, if they 
+	    	// Remove highlight of selected article and neighbours, if they
 	    	// are not neighbours of other articles as well.
 	    	const neighbours = d3.selectAll(".neighbour-of-" + article_id);
 	    	neighbours.each(function(d) {
@@ -456,8 +471,8 @@ class ScatterPlot {
 
 		// If this is the second time this circle is right clicked,
 		// hide neighbours.
-		if ((selected_circle.attr("class") != null) && 
-			(selected_circle.attr("class").includes("neighbour-of-" + 
+		if ((selected_circle.attr("class") != null) &&
+			(selected_circle.attr("class").includes("neighbour-of-" +
 														article_id))) {
 
 			removeArticleNeighbours(article_id);
@@ -465,7 +480,7 @@ class ScatterPlot {
 		} else {
 
 			loadArticleNeighbours(d.article_name);
-		}	
+		}
     }
 
 	// Function to be called when user hovers over a circle - shows tooltip
@@ -576,7 +591,7 @@ class ScatterPlot {
 		}
 
 		// Hide tooltip
-		this.div.transition()		
+		this.div.transition()
 				.duration(500)
 				.style("opacity", 0)
 				.remove();
@@ -589,9 +604,9 @@ class ScatterPlot {
 
 		while(bound >= 1) {
 
-			if (d3.max([max_val, bound]) == max_val) 
+			if (d3.max([max_val, bound]) == max_val)
 				return max_val + bound / 10;
-			
+
 			bound /= 10;
 		}
 
