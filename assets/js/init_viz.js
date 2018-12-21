@@ -16,12 +16,12 @@ let events;			//Stores instance of events class
 const circle_radius = 2.5;   	//Radius of circle on top articles view
 
 let selected_events_list = []; 	//List of events that have been selected on 
-								// the left side panel
+                                  // the left side panel
 
 // State
 let state = "TopArticles";	// Global state of the viz (either "TopArticles" 
-							// or "SingleArticle").
+// or "SingleArticle").
 
 let ignore_event = false;	// Prevents brush event propagation, when
-							// the brush selection is rounded, for 
-							// better visualization. 
+// the brush selection is rounded, for
+// better visualization.
